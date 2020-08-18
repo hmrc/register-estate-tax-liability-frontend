@@ -77,8 +77,11 @@ class CheckYourAnswersControllerSpec extends SpecBase {
         .overrides(bind[EstatesStoreConnector].toInstance(mockEstatesStoreConnector))
         .build()
 
-      when(mockService.submitTaxLiability(any())(any())).thenReturn(Future.successful(HttpResponse(200)))
-      when(mockEstatesStoreConnector.setTaskComplete()(any(), any())).thenReturn(Future.successful(HttpResponse(200)))
+      when(mockService.submitTaxLiability(any())(any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
+
+      when(mockEstatesStoreConnector.setTaskComplete()(any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       val controller = application.injector.instanceOf[CheckYourAnswersController]
 

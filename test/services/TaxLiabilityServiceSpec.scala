@@ -25,11 +25,10 @@ import org.mockito.Matchers.any
 import org.mockito.Mockito.when
 import pages.DidDeclareTaxToHMRCYesNoPage
 import play.api.inject.bind
+import play.api.test.Helpers._
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.time.TaxYear
-import play.api.test.Helpers._
 
-import scala.concurrent.ExecutionContext.Implicits._
 import scala.concurrent.Future
 
 class TaxLiabilityServiceSpec extends SpecBase {
@@ -269,6 +268,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
   "getTaxYearOfDeath" must {
     "return the correct tax year the date of death falls in" when {
+
       "date of death is between Jan 1st and April 5th (inclusive)" in {
 
       val mockEstatesConnector = mock[EstatesConnector]
@@ -318,8 +318,11 @@ class TaxLiabilityServiceSpec extends SpecBase {
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
         .build()
 
-      when(mockEstatesConnector.resetTaxLiability()(any(), any())).thenReturn(Future.successful(HttpResponse(200)))
-      when(mockEstatesConnector.saveTaxConsequence(any())(any(), any())).thenReturn(Future.successful(HttpResponse(200)))
+      when(mockEstatesConnector.resetTaxLiability()(any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
+
+      when(mockEstatesConnector.saveTaxConsequence(any())(any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       val service = application.injector.instanceOf[TaxLiabilityService]
 
@@ -341,7 +344,8 @@ class TaxLiabilityServiceSpec extends SpecBase {
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
         .build()
 
-      when(mockEstatesConnector.resetTaxLiability()(any(), any())).thenReturn(Future.successful(HttpResponse(200)))
+      when(mockEstatesConnector.resetTaxLiability()(any(), any()))
+        .thenReturn(Future.successful(HttpResponse(OK, "")))
 
       val service = application.injector.instanceOf[TaxLiabilityService]
 
