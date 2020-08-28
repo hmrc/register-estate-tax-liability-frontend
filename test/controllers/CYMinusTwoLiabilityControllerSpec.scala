@@ -68,7 +68,7 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(formWithArgs, taxYear, NormalMode)(fakeRequest, messages).toString
+        view(formWithArgs, taxYear, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -90,7 +90,7 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(formWithArgs.fill(true), taxYear, NormalMode)(fakeRequest, messages).toString
+        view(formWithArgs.fill(true), taxYear, NormalMode)(request, messages).toString
 
       application.stop()
     }
@@ -138,7 +138,7 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase with MockitoSugar {
       status(result) mustEqual BAD_REQUEST
 
       contentAsString(result) mustEqual
-        view(boundForm, taxYear, NormalMode)(fakeRequest, messages).toString
+        view(boundForm, taxYear, NormalMode)(request, messages).toString
 
       application.stop()
     }

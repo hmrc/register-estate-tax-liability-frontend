@@ -1,6 +1,8 @@
 checkYourAnswers.title = Check years of tax liability
 checkYourAnswers.heading = Check years of tax liability
 
+footer.links.accessibility.text = Accessibility
+
 date.day = Day
 date.month = Month
 date.year = Year

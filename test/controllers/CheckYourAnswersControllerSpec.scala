@@ -47,7 +47,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       status(result) mustEqual OK
 
       contentAsString(result) mustEqual
-        view(Nil)(fakeRequest, messages).toString
+        view(Nil)(request, messages).toString
 
       application.stop()
     }
