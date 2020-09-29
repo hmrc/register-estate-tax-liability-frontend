@@ -27,7 +27,7 @@
 )(implicit messages: Messages)
 
 <div class="form-group @if(field.hasErrors){form-group-error}">
-    <fieldset id="@{field.id}"
+    <fieldset id="@{field.id}" 
         @if(field.hasErrors || hint.nonEmpty){
             aria-describedby="@if(hint.nonEmpty){hint-@{field.id}}@if(hint.nonEmpty && field.hasErrors){ }@if(field.hasErrors){error-message-@{field.id}-input}"
         }
