@@ -21,11 +21,12 @@ import config.FrontendAppConfig
 import connectors.EstatesStoreConnector
 import controllers.actions.Actions
 import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.TaxLiabilityService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
-import utils.CheckYourAnswersHelper
+import utils.{CheckYourAnswersHelper, Session}
 import views.html.CheckYourAnswersView
 
 import scala.concurrent.ExecutionContext.Implicits._
@@ -40,6 +41,8 @@ class CheckYourAnswersController @Inject()(
                                             estatesStoreConnector: EstatesStoreConnector,
                                             val appConfig : FrontendAppConfig
                                           ) extends FrontendBaseController with I18nSupport {
+
+  private val logger: Logger = Logger(getClass)
 
   def onPageLoad(): Action[AnyContent] = actions.authWithData {
     implicit request =>
@@ -65,6 +68,8 @@ class CheckYourAnswersController @Inject()(
         _ <- estatesService.submitTaxLiability(request.userAnswers)
         _ <- estatesStoreConnector.setTaskComplete()
       } yield {
+        logger.info(s"[Session ID: ${Session.id(hc)}]" +
+          s" user has finished registering tax liability and is returning to the task list")
         Redirect(appConfig.registerEstateHubOverview)
       }
   }

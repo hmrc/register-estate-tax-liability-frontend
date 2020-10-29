@@ -20,9 +20,9 @@ import base.SpecBase
 import com.github.tomakehurst.wiremock.client.WireMock.{okJson, urlEqualTo, _}
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import play.api.libs.json.Json
+import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.WireMockHelper
-import play.api.test.Helpers._
 
 import scala.concurrent.ExecutionContext
 

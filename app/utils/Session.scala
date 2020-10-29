@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package pages
+package utils
 
-import play.api.libs.json.JsPath
+import uk.gov.hmrc.http.HeaderCarrier
 
-case object CYMinusFourEarlierYearsYesNoPage extends QuestionPage[Boolean] {
+object Session {
 
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "cyMinusFourEarlierYearsYesNo"
+  def id(hc: HeaderCarrier): String = hc.sessionId.map(_.value).getOrElse("No Session ID available")
 
 }
