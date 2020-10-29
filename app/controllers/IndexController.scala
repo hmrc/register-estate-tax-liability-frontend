@@ -24,12 +24,14 @@ import javax.inject.Inject
 import models.requests.OptionalDataRequest
 import models.{NormalMode, UserAnswers}
 import pages.DateOfDeathPage
+import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import services.TaxLiabilityService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
+import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,6 +42,8 @@ class IndexController @Inject()(
                                  repository: SessionRepository,
                                  errorHandler: ErrorHandler
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+
+  private val logger: Logger = Logger(getClass)
 
   private def startNewSession(dateOfDeath: LocalDate)(implicit request: OptionalDataRequest[AnyContent]) = for {
     _ <- repository.resetCache(request.internalId)
@@ -53,7 +57,7 @@ class IndexController @Inject()(
 
   def onPageLoad: Action[AnyContent] = actions.authWithSession.async {
     implicit request =>
-
+      logger.info(s"[Session ID: ${Session.id(hc)}] user has started to register tax liability")
       taxLiabilityService.dateOfDeath() flatMap { dateOfDeath =>
         val userAnswers: UserAnswers = request.userAnswers
           .getOrElse(UserAnswers.startNewSession(request.internalId))

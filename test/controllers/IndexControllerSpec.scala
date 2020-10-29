@@ -22,14 +22,13 @@ import base.SpecBase
 import connectors.EstatesConnector
 import models.NormalMode
 import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.Mockito.{times, verify, when}
 import pages.DateOfDeathPage
 import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.LocalDateService
-import org.mockito.Mockito.{times, verify}
-import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
