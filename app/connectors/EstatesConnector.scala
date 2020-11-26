@@ -22,17 +22,12 @@ import config.FrontendAppConfig
 import javax.inject.Inject
 import models.YearsReturns
 import play.api.libs.json.{JsValue, Json}
-import uk.gov.hmrc.http.HttpReads.Implicits
-import uk.gov.hmrc.http.HttpReads.Implicits.{readEitherOf, throwOnFailure}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpReads.Implicits._
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class EstatesConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
-
-  implicit def httpResponse: HttpReads[HttpResponse] =
-    throwOnFailure(readEitherOf[HttpResponse](Implicits.readRaw))
 
   private val getDateOfDeathUrl = s"${config.estatesUrl}/estates/date-of-death"
 

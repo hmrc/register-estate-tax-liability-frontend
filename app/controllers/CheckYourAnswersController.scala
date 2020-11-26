@@ -21,11 +21,11 @@ import config.FrontendAppConfig
 import connectors.EstatesStoreConnector
 import controllers.actions.Actions
 import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear}
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.TaxLiabilityService
-import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import utils.{CheckYourAnswersHelper, Session}
 import views.html.CheckYourAnswersView
 
@@ -40,9 +40,7 @@ class CheckYourAnswersController @Inject()(
                                             estatesService: TaxLiabilityService,
                                             estatesStoreConnector: EstatesStoreConnector,
                                             val appConfig : FrontendAppConfig
-                                          ) extends FrontendBaseController with I18nSupport {
-
-  private val logger: Logger = Logger(getClass)
+                                          ) extends FrontendBaseController with I18nSupport with Logging {
 
   def onPageLoad(): Action[AnyContent] = actions.authWithData {
     implicit request =>
