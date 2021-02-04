@@ -24,9 +24,7 @@ import play.api.Configuration
 import play.api.libs.json._
 import play.modules.reactivemongo.ReactiveMongoApi
 import reactivemongo.api.WriteConcern
-import reactivemongo.api.indexes.{Index, IndexType}
-import reactivemongo.bson.BSONDocument
-import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import reactivemongo.api.indexes.IndexType
 import reactivemongo.play.json.collection.JSONCollection
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +34,8 @@ class DefaultSessionRepository @Inject()(
                                           config: Configuration
                                         )(implicit ec: ExecutionContext) extends SessionRepository {
 
-
+  implicit final val jsObjectWrites: OWrites[JsObject] = OWrites[JsObject](identity)
+  
   private val collectionName: String = "user-answers"
 
   private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
@@ -44,10 +43,10 @@ class DefaultSessionRepository @Inject()(
   private def collection: Future[JSONCollection] =
     mongo.database.map(_.collection[JSONCollection](collectionName))
 
-  private val lastUpdatedIndex = Index(
+  private val lastUpdatedIndex = MongoIndex(
     key     = Seq("lastUpdated" -> IndexType.Ascending),
-    name    = Some("user-answers-last-updated-index"),
-    options = BSONDocument("expireAfterSeconds" -> cacheTtl)
+    name    = "user-answers-last-updated-index",
+    expireAfterSeconds = Some(cacheTtl)
   )
 
   val started: Future[Unit] =
