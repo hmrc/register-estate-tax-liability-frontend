@@ -30,14 +30,18 @@ import reactivemongo.play.json.collection.JSONCollection
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultSessionRepository @Inject()(
-                                          mongo: ReactiveMongoApi,
+                                          override val mongo: ReactiveMongoApi,
                                           config: Configuration
-                                        )(implicit ec: ExecutionContext) extends SessionRepository {
+                                        )(override implicit val ec: ExecutionContext) extends SessionRepository
+  with IndexManager {
 
   implicit final val jsObjectWrites: OWrites[JsObject] = OWrites[JsObject](identity)
   
-  private val collectionName: String = "user-answers"
+  override val collectionName: String = "user-answers"
 
+  override val dropIndexes: Boolean =
+    config.get[Boolean]("microservice.services.features.mongo.dropIndexes")
+  
   private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
 
   private def collection: Future[JSONCollection] =
