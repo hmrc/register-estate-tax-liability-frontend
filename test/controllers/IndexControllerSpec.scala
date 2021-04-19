@@ -16,11 +16,10 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.SpecBase
 import connectors.EstatesConnector
 import models.NormalMode
+import org.joda.time.{DateTime, DateTimeUtils}
 import org.mockito.Matchers.any
 import org.mockito.Mockito.{times, verify, when}
 import pages.DateOfDeathPage
@@ -30,6 +29,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.LocalDateService
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class IndexControllerSpec extends SpecBase {
@@ -40,12 +40,18 @@ class IndexControllerSpec extends SpecBase {
       override def now: LocalDate = date
     }
 
+    def setCurrentDateTime(date: LocalDate) = {
+      DateTimeUtils.setCurrentMillisFixed(new DateTime(date.toString).getMillis)
+    }
+
     "for an existing session" when {
 
       "continue session if date of death is not changed" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
         val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
+
+        setCurrentDateTime(dateBeforeDec23rd)
 
         val initialDateOfDeath = LocalDate.of(2015, 5, 1)
 
@@ -76,6 +82,8 @@ class IndexControllerSpec extends SpecBase {
         val mockEstatesConnector = mock[EstatesConnector]
 
         val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
+
+        setCurrentDateTime(dateBeforeDec23rd)
 
         val initialDateOfDeath = LocalDate.of(2015, 5, 1)
 
@@ -113,6 +121,8 @@ class IndexControllerSpec extends SpecBase {
 
         val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
 
+        setCurrentDateTime(dateBeforeDec23rd)
+
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
@@ -143,6 +153,8 @@ class IndexControllerSpec extends SpecBase {
 
         val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
 
+        setCurrentDateTime(dateBeforeDec23rd)
+
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
@@ -172,6 +184,8 @@ class IndexControllerSpec extends SpecBase {
         val mockEstatesConnector = mock[EstatesConnector]
 
         val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
+
+        setCurrentDateTime(dateAfterDec23rd)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -204,6 +218,8 @@ class IndexControllerSpec extends SpecBase {
 
           val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
 
+          setCurrentDateTime(dateBeforeDec23rd)
+
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
@@ -230,6 +246,8 @@ class IndexControllerSpec extends SpecBase {
           val mockEstatesConnector = mock[EstatesConnector]
 
           val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
+
+          setCurrentDateTime(dateAfterDec23rd)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -263,6 +281,8 @@ class IndexControllerSpec extends SpecBase {
 
           val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
 
+          setCurrentDateTime(dateBeforeDec23rd)
+
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
@@ -289,6 +309,8 @@ class IndexControllerSpec extends SpecBase {
           val mockEstatesConnector = mock[EstatesConnector]
 
           val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
+
+          setCurrentDateTime(dateAfterDec23rd)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -322,6 +344,8 @@ class IndexControllerSpec extends SpecBase {
 
           val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
 
+          setCurrentDateTime(dateBeforeDec23rd)
+
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
@@ -348,6 +372,8 @@ class IndexControllerSpec extends SpecBase {
           val mockEstatesConnector = mock[EstatesConnector]
 
           val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
+
+          setCurrentDateTime(dateAfterDec23rd)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
