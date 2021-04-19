@@ -46,13 +46,17 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
   "DidDeclareTaxToHMRC Controller" when {
 
     "for previous tax year" must {
+
+      val cyMinus1TaxYearStart: String = TaxYearRange(CYMinus1TaxYear).startYear
+      val cyMinus1TaxYearEnd: String = TaxYearRange(CYMinus1TaxYear).endYear
+
       "return OK and the correct view for a GET" in {
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         val request = FakeRequest(GET, didDeclareRoute(CYMinus1TaxYear))
 
-        val formWithArgs = form(Seq("6 April 2019", "5 April 2020"))
+        val formWithArgs = form(Seq(cyMinus1TaxYearStart, cyMinus1TaxYearEnd))
 
         val result = route(application, request).value
 
@@ -72,7 +76,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-        val formWithArgs = form(Seq("6 April 2019", "5 April 2020"))
+        val formWithArgs = form(Seq(cyMinus1TaxYearStart, cyMinus1TaxYearEnd))
 
         val request = FakeRequest(GET, didDeclareRoute(CYMinus1TaxYear))
 
@@ -120,7 +124,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, didDeclareRoute(CYMinus1TaxYear))
             .withFormUrlEncodedBody(("value", ""))
 
-        val formWithArgs = form(Seq("6 April 2019", "5 April 2020"))
+        val formWithArgs = form(Seq(cyMinus1TaxYearStart, cyMinus1TaxYearEnd))
 
         val boundForm = formWithArgs.bind(Map("value" -> ""))
 
@@ -170,6 +174,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "for current tax year minus 2" must {
+
+      val cyMinus2TaxYearStart: String = TaxYearRange(CYMinus2TaxYear).startYear
+      val cyMinus2TaxYearEnd: String = TaxYearRange(CYMinus2TaxYear).endYear
+
       "return OK and the correct view for a GET" in {
 
         val range = TaxYearRange(CYMinus2TaxYear)
@@ -182,7 +190,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[DidDeclareTaxToHMRCYesNoView]
 
-        val formWithArgs = form(Seq("6 April 2018", "5 April 2019"))
+        val formWithArgs = form(Seq(cyMinus2TaxYearStart, cyMinus2TaxYearEnd))
 
         status(result) mustEqual OK
 
@@ -208,7 +216,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        val formWithArgs = form(Seq("6 April 2018", "5 April 2019"))
+        val formWithArgs = form(Seq(cyMinus2TaxYearStart, cyMinus2TaxYearEnd))
 
         contentAsString(result) mustEqual
           view(formWithArgs.fill(true), CYMinus2TaxYear, range.toRange, NormalMode)(request, messages).toString
@@ -250,7 +258,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, didDeclareRoute(CYMinus2TaxYear))
             .withFormUrlEncodedBody(("value", ""))
 
-        val formWithArgs = form(Seq("6 April 2018", "5 April 2019"))
+        val formWithArgs = form(Seq(cyMinus2TaxYearStart, cyMinus2TaxYearEnd))
 
         val boundForm = formWithArgs.bind(Map("value" -> ""))
 
@@ -300,6 +308,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "for current tax year minus 3" must {
+
+      val cyMinus3TaxYearStart: String = TaxYearRange(CYMinus3TaxYear).startYear
+      val cyMinus3TaxYearEnd: String = TaxYearRange(CYMinus3TaxYear).endYear
+
       "return OK and the correct view for a GET" in {
 
         val range = TaxYearRange(CYMinus3TaxYear)
@@ -312,7 +324,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[DidDeclareTaxToHMRCYesNoView]
 
-        val formWithArgs = form(Seq("6 April 2017", "5 April 2018"))
+        val formWithArgs = form(Seq(cyMinus3TaxYearStart, cyMinus3TaxYearEnd))
 
         status(result) mustEqual OK
 
@@ -336,7 +348,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val formWithArgs = form(Seq("6 April 2017", "5 April 2018"))
+        val formWithArgs = form(Seq(cyMinus3TaxYearStart, cyMinus3TaxYearEnd))
 
         status(result) mustEqual OK
 
@@ -380,7 +392,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, didDeclareRoute(CYMinus3TaxYear))
             .withFormUrlEncodedBody(("value", ""))
 
-        val formWithArgs = form(Seq("6 April 2017", "5 April 2018"))
+        val formWithArgs = form(Seq(cyMinus3TaxYearStart, cyMinus3TaxYearEnd))
 
         val boundForm = formWithArgs.bind(Map("value" -> ""))
 
@@ -430,6 +442,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "for current tax year minus 4" must {
+
+      val cyMinus4TaxYearStart: String = TaxYearRange(CYMinus4TaxYear).startYear
+      val cyMinus4TaxYearEnd: String = TaxYearRange(CYMinus4TaxYear).endYear
+
       "return OK and the correct view for a GET" in {
 
         val range = TaxYearRange(CYMinus4TaxYear)
@@ -442,7 +458,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val view = application.injector.instanceOf[DidDeclareTaxToHMRCYesNoView]
 
-        val formWithArgs = form(Seq("6 April 2016", "5 April 2017"))
+        val formWithArgs = form(Seq(cyMinus4TaxYearStart, cyMinus4TaxYearEnd))
 
         status(result) mustEqual OK
 
@@ -466,7 +482,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        val formWithArgs = form(Seq("6 April 2016", "5 April 2017"))
+        val formWithArgs = form(Seq(cyMinus4TaxYearStart, cyMinus4TaxYearEnd))
 
         status(result) mustEqual OK
 
@@ -510,7 +526,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, didDeclareRoute(CYMinus4TaxYear))
             .withFormUrlEncodedBody(("value", ""))
 
-        val formWithArgs = form(Seq("6 April 2016", "5 April 2017"))
+        val formWithArgs = form(Seq(cyMinus4TaxYearStart, cyMinus4TaxYearEnd))
 
         val boundForm = formWithArgs.bind(Map("value" -> ""))
 
