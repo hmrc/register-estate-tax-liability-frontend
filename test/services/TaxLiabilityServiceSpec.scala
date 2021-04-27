@@ -445,6 +445,36 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
     }
 
+    "need to pay for some years in CY-1, CY-2, CY-3, CY-4 years (Before 5 October)" must {
+
+      "generate a list with 3 tax consequences where liable" in {
+        val userAnswers = emptyUserAnswers
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), true).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+
+        val today = LocalDate.of(2020, 5, 5)
+
+        setCurrentDateTime(today)
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
+          .build()
+
+        val service = application.injector.instanceOf[TaxLiabilityService]
+
+        val expected = service.evaluateTaxYears(userAnswers)
+
+        expected mustBe List(
+          YearReturnType(taxReturnYear = "17", taxConsequence = true),
+          YearReturnType(taxReturnYear = "19", taxConsequence = true),
+          YearReturnType(taxReturnYear = "20", taxConsequence = false)
+        )
+      }
+
+    }
+
     "need to pay tax for CY-1, CY-2 (before 5 October)" when {
 
       "generate a list with 2 tax consequences" in {
