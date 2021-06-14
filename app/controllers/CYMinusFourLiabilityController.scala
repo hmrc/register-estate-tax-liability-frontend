@@ -37,36 +37,34 @@ class CYMinusFourLiabilityController @Inject()(
                                  actions: Actions,
                                  formProvider: YesNoFormProviderWithArguments,
                                  sessionRepository: SessionRepository,
-                                 view: CYMinusFourYesNoView
+                                 view: CYMinusFourYesNoView,
+                                 taxYearRange: TaxYearRange
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def form(ranges: Seq[String]) = formProvider.withPrefix("cyMinusFour.liability", ranges)
 
+  private val workingTaxYear = CYMinus4TaxYear
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
     implicit request =>
 
-      val range = TaxYearRange(CYMinus4TaxYear)
-
-      val f = form(Seq(range.startYear, range.endYear))
+      val f = form(Seq(taxYearRange.startYear(workingTaxYear), taxYearRange.endYear(workingTaxYear)))
 
       val preparedForm = request.userAnswers.get(CYMinusFourYesNoPage) match {
         case None => f
         case Some(value) => f.fill(value)
       }
 
-      Ok(view(preparedForm, range.toRange, mode))
+      Ok(view(preparedForm, taxYearRange.toRange(workingTaxYear), mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
     implicit request =>
 
-      val range = TaxYearRange(CYMinus4TaxYear)
-
-      val f = form(Seq(range.startYear, range.endYear))
+      val f = form(Seq(taxYearRange.startYear(workingTaxYear), taxYearRange.endYear(workingTaxYear)))
 
       f.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, range.toRange, mode))),
+          Future.successful(BadRequest(view(formWithErrors, taxYearRange.toRange(workingTaxYear), mode))),
 
         value =>
           for {

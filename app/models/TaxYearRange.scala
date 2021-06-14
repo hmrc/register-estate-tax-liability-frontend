@@ -16,29 +16,25 @@
 
 package models
 
+import javax.inject.Inject
 import play.api.i18n.Messages
+import uk.gov.hmrc.play.language.LanguageUtils
 
-case class TaxYearRange(taxYear: TaxYear)(implicit messages: Messages) {
+class TaxYearRange @Inject()(languageUtils: LanguageUtils) {
 
-  private val fullDatePattern: String = "d MMMM yyyy"
+  private def taxYearYear(taxYear: TaxYear) = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year)
 
-  private val start = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).starts.toString(fullDatePattern)
-  private val end = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).finishes.toString(fullDatePattern)
+  def startYear(taxYear: TaxYear)(implicit messages: Messages): String = languageUtils.Dates.formatDate(taxYearYear(taxYear).starts)
+  def endYear(taxYear: TaxYear)(implicit messages: Messages): String = languageUtils.Dates.formatDate(taxYearYear(taxYear).finishes)
 
-  private val startingYearForTaxYear: String = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).startYear.toString
+  def yearAtStart(taxYear: TaxYear): String = taxYearYear(taxYear).startYear.toString
 
-  def yearAtStart: String = startingYearForTaxYear
-
-  def startYear: String = start
-
-  def endYear: String = end
-
-  def toRange : String = {
-    messages("taxYearToRange", start, end)
+  def toRange(taxYear: TaxYear)(implicit messages: Messages) : String = {
+    messages("taxYearToRange", startYear(taxYear), endYear(taxYear))
   }
 
-  def andRange : String = {
-    messages("taxYearAndRange", start, end)
+  def andRange(taxYear: TaxYear)(implicit messages: Messages) : String = {
+    messages("taxYearAndRange", startYear(taxYear), endYear(taxYear))
   }
 
 }

@@ -33,13 +33,15 @@ class CYMinusFourEarlierYearsLiabilityController @Inject()(
                                  val controllerComponents: MessagesControllerComponents,
                                  @TaxLiability navigator: Navigator,
                                  actions: Actions,
-                                 view: EarlierYearsToPayThanAskedYesNoView
+                                 view: EarlierYearsToPayThanAskedYesNoView,
+                                 taxYearRange: TaxYearRange
                                ) extends FrontendBaseController with I18nSupport {
 
+  private val workingTaxYear = CYMinus4TaxYear
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
     implicit request =>
 
-      val start = TaxYearRange(CYMinus4TaxYear).yearAtStart
+      val start = taxYearRange.yearAtStart(workingTaxYear)
 
       val continueUrl = routes.CYMinusFourEarlierYearsLiabilityController.onSubmit(mode)
 
