@@ -37,31 +37,31 @@ class DidDeclareTaxToHMRCController @Inject()(
                                                actions: Actions,
                                                formProvider: YesNoFormProviderWithArguments,
                                                sessionRepository: SessionRepository,
-                                               view: DidDeclareTaxToHMRCYesNoView
+                                               view: DidDeclareTaxToHMRCYesNoView,
+                                               taxYearRange: TaxYearRange
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
   def form(ranges: Seq[String]) = formProvider.withPrefix("didDeclareToHMRC", ranges)
 
   def onPageLoad(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData {
     implicit request =>
-      val range = TaxYearRange(taxYear)
 
-      val f = form(Seq(range.startYear, range.endYear))
+      val f = form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear)))
 
       val preparedForm = request.userAnswers.get(DidDeclareTaxToHMRCYesNoPage(taxYear)) match {
         case None => f
         case Some(value) => f.fill(value)
       }
 
-      Ok(view(preparedForm, taxYear, range.toRange, mode))
+      Ok(view(preparedForm, taxYear, taxYearRange.toRange(taxYear), mode))
   }
 
   def onSubmit(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData.async {
     implicit request =>
-      val range = TaxYearRange(taxYear)
-      form(Seq(range.startYear, range.endYear)).bindFromRequest().fold(
+
+      form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear))).bindFromRequest().fold(
         formWithErrors => {
-          Future.successful(BadRequest(view(formWithErrors, taxYear, range.toRange, mode)))
+          Future.successful(BadRequest(view(formWithErrors, taxYear, taxYearRange.toRange(taxYear), mode)))
         },
         value => {
           val page = DidDeclareTaxToHMRCYesNoPage(taxYear)
