@@ -41,60 +41,68 @@ class TaxYearRangeSpec extends SpecBase with BeforeAndAfterEach {
         "CYMinus1TaxYear" when {
 
           val taxYear = CYMinus1TaxYear
+          val yearStart: Int = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).currentYear
+          val yearEnd = yearStart + 1
 
           "English" in {
             val result = taxYearRange.toRange(taxYear)(messages("en"))
-            result mustEqual Seq("6 April 2019", "5 April 2020")
+            result mustEqual s"6 April $yearStart to 5 April $yearEnd"
           }
 
           "Welsh" in {
             val result = taxYearRange.toRange(taxYear)(messages("cy"))
-            result mustEqual Seq("6 Ebrill 2019", "5 Ebrill 2020")
+            result mustEqual s"6 Ebrill $yearStart i 5 Ebrill $yearEnd"
           }
         }
 
         "CYMinus2TaxYear" when {
 
           val taxYear = CYMinus2TaxYear
+          val yearStart: Int = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).currentYear
+          val yearEnd = yearStart + 1
 
           "English" in {
             val result = taxYearRange.toRange(taxYear)(messages("en"))
-            result mustEqual Seq("6 April 2018", "5 April 2019")
+            result mustEqual s"6 April $yearStart to 5 April $yearEnd"
           }
 
           "Welsh" in {
             val result = taxYearRange.toRange(taxYear)(messages("cy"))
-            result mustEqual Seq("6 Ebrill 2018", "5 Ebrill 2019")
+            result mustEqual s"6 Ebrill $yearStart i 5 Ebrill $yearEnd"
           }
         }
 
         "CYMinus3TaxYear" when {
 
           val taxYear = CYMinus3TaxYear
+          val yearStart: Int = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).currentYear
+          val yearEnd = yearStart + 1
 
           "English" in {
             val result = taxYearRange.toRange(taxYear)(messages("en"))
-            result mustEqual Seq("6 April 2017", "5 April 2018")
+            result mustEqual s"6 April $yearStart to 5 April $yearEnd"
           }
 
           "Welsh" in {
             val result = taxYearRange.toRange(taxYear)(messages("cy"))
-            result mustEqual Seq("6 Ebrill 2017", "5 Ebrill 2018")
+            result mustEqual s"6 Ebrill $yearStart i 5 Ebrill $yearEnd"
           }
         }
 
         "CYMinus4TaxYear" when {
 
           val taxYear = CYMinus4TaxYear
+          val yearStart: Int = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year).currentYear
+          val yearEnd = yearStart + 1
 
           "English" in {
             val result = taxYearRange.toRange(taxYear)(messages("en"))
-            result mustEqual Seq("6 April 2016", "5 April 2017")
+            result mustEqual s"6 April $yearStart to 5 April $yearEnd"
           }
 
           "Welsh" in {
             val result = taxYearRange.toRange(taxYear)(messages("cy"))
-            result mustEqual Seq("6 Ebrill 2016", "5 Ebrill 2017")
+            result mustEqual s"6 Ebrill $yearStart i 5 Ebrill $yearEnd"
           }
         }
       }

@@ -32,9 +32,4 @@ class TaxYearRange @Inject()(languageUtils: LanguageUtils) {
   def toRange(taxYear: TaxYear)(implicit messages: Messages) : String = {
     messages("taxYearToRange", startYear(taxYear), endYear(taxYear))
   }
-
-  def andRange(taxYear: TaxYear)(implicit messages: Messages) : String = {
-    messages("taxYearAndRange", startYear(taxYear), endYear(taxYear))
-  }
-
 }

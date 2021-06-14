@@ -30,7 +30,7 @@ class CheckYourAnswersHelperSpec extends SpecBase {
   val taxYearRange: TaxYearRange = new TaxYearRange(languageUtils)
 
   val cYMinus4StartYear: String = taxYearRange.yearAtStart(CYMinus4TaxYear)
-  val cYMinus3StartYear: String = taxYearRange.yearAtStart(CYMinus4TaxYear)
+  val cYMinus3StartYear: String = taxYearRange.yearAtStart(CYMinus3TaxYear)
 
   "Check your answers helper" when {
 
@@ -52,7 +52,6 @@ class CheckYourAnswersHelperSpec extends SpecBase {
             )
           )
         )
-
       }
 
       "render answers for tax before 3 years" in {
