@@ -26,10 +26,9 @@
 @(date: String, mode: Mode, continueUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${messages("earlierYearsLiability.title", date)}"
+    title = s"${messages("earlierYearsLiability.title", date)}",
+    showBackLink = true
 ) {
-
-        @components.back_link()
 
         <h1 class="heading-large">@messages("earlierYearsLiability.heading", date)</h1>
 

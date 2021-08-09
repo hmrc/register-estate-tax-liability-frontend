@@ -27,12 +27,11 @@
 @(answerSections: Seq[Section])(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = messages("checkYourAnswers.title")
-    ) {
+    title = messages("checkYourAnswers.title"),
+    showBackLink = true
+) {
 
     @formHelper(action = CheckYourAnswersController.onSubmit(), 'autoComplete -> "off") {
-
-    @components.back_link()
 
     @components.heading("checkYourAnswers.heading")
 

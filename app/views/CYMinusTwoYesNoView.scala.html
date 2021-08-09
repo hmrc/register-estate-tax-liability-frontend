@@ -26,12 +26,11 @@
 @(form: Form[_], taxYear: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)}${messages("cyMinusTwo.liability.title", taxYear)}"
+    title = s"${errorPrefix(form)}${messages("cyMinusTwo.liability.title", taxYear)}",
+    showBackLink = true
 ) {
 
     @formHelper(action = CYMinusTwoLiabilityController.onSubmit(mode), 'autoComplete -> "off") {
-
-        @components.back_link()
 
         @components.error_summary(form.errors)
 
