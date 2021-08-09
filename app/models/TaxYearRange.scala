@@ -32,10 +32,10 @@ class TaxYearRange @Inject()(languageUtils: LanguageUtils) {
   }
 
   def startYear(taxYear: TaxYear)(implicit messages: Messages): String =
-    languageUtils.Dates.formatDate(taxYearYear(taxYear).starts)
+    languageUtils.Dates.formatDate(taxYearYear(taxYear).starts.toJavaDate)
 
   def endYear(taxYear: TaxYear)(implicit messages: Messages): String =
-    languageUtils.Dates.formatDate(taxYearYear(taxYear).finishes)
+    languageUtils.Dates.formatDate(taxYearYear(taxYear).finishes.toJavaDate)
 
   def yearAtStart(taxYear: TaxYear): String = taxYearYear(taxYear).startYear.toString
 
