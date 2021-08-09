@@ -42,7 +42,7 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
 
   private val currentTaxYearStartDate = LocalDate.of(
     TaxYear.current.starts.getYear,
-    TaxYear.current.starts.getMonthOfYear,
+    TaxYear.current.starts.getMonthValue,
     TaxYear.current.starts.getDayOfMonth
   )
 

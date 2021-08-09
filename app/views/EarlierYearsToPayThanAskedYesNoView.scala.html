@@ -16,11 +16,14 @@
 
 @import controllers.routes._
 @import config.FrontendAppConfig
+@import views.html.components.{Heading, SubmitButton}
 
 @this(
-        main_template: MainTemplate,
-        formHelper: FormWithCSRF,
-        appConfig: FrontendAppConfig
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF,
+    appConfig: FrontendAppConfig,
+    heading: Heading,
+    submitButton: SubmitButton
 )
 
 @(date: String, mode: Mode, continueUrl: Call)(implicit request: Request[_], messages: Messages)
@@ -30,13 +33,13 @@
     showBackLink = true
 ) {
 
-        <h1 class="heading-large">@messages("earlierYearsLiability.heading", date)</h1>
+        @heading("earlierYearsLiability.heading", Some(date))
 
         <p>@messages("earlierYearsLiability.p1")</p>
 
         @formHelper(action = continueUrl, 'autoComplete -> "off") {
 
-            @components.submit_button()
+            @submitButton()
 
         }
 
