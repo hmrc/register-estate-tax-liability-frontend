@@ -53,37 +53,37 @@ earlierYearsLiability.title = Mae’n rhaid i chi roi gwybod i CThEM a oedd ange
 earlierYearsLiability.heading = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
 earlierYearsLiability.p1 = Bydd angen i chi anfon rhestr o unrhyw incwm sy’n agored i dreth.
 
-cyMinusFour.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusFour.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusFour.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusFour.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
-cyMinusFour.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâddalu unrhyw dreth o {0} i {1}
+cyMinusFourYesNo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusFourYesNo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusFourYesNo.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusFourYesNo.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
+cyMinusFourYesNo.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâddalu unrhyw dreth o {0} i {1}
 
-cyMinusThree.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusThree.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusThree.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusThree.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
-cyMinusThree.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
+cyMinusThreeYesNo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusThreeYesNo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusThreeYesNo.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusThreeYesNo.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
+cyMinusThreeYesNo.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
 
-cyMinusTwo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusTwo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusTwo.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusTwo.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
-cyMinusTwo.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
+cyMinusTwoYesNo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusTwoYesNo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusTwoYesNo.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusTwoYesNo.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
+cyMinusTwoYesNo.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
 
-cyMinusOne.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusOne.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusOne.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
-cyMinusOne.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
-cyMinusOne.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
+cyMinusOneYesNo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusOneYesNo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusOneYesNo.liability.heading = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
+cyMinusOneYesNo.liability.p1 = Nid yw hyn yn cynnwys Treth Etifeddiant.
+cyMinusOneYesNo.liability.error.required = Dewiswch ‘Iawn’ os oedd angen i’r ystâd dalu unrhyw dreth o {0} i {1}
 
 taxYearAndRange = {0} a {1}
 taxYearToRange = {0} i {1}
 
-didDeclareToHMRC.checkYourAnswersLabel = A gafodd y dreth o {0} ymlaen ei datgan?
-didDeclareToHMRC.title = A gafodd y dreth o {0} ymlaen ei datgan?
-didDeclareToHMRC.heading = A gafodd y dreth o {0} ymlaen ei datgan?
-didDeclareToHMRC.p1 = Mae’n rhaid i chi fod wedi anfon datgeliad gwirfoddol llawn ar gyfer {0}.
-didDeclareToHMRC.error.required = Dewiswch ‘Iawn’ os cafodd y dreth o {0} i {1} ei datgan
+didDeclareToHMRCYesNo.checkYourAnswersLabel = A gafodd y dreth o {0} ymlaen ei datgan?
+didDeclareToHMRCYesNo.title = A gafodd y dreth o {0} ymlaen ei datgan?
+didDeclareToHMRCYesNo.heading = A gafodd y dreth o {0} ymlaen ei datgan?
+didDeclareToHMRCYesNo.p1 = Mae’n rhaid i chi fod wedi anfon datgeliad gwirfoddol llawn ar gyfer {0}.
+didDeclareToHMRCYesNo.error.required = Dewiswch ‘Iawn’ os cafodd y dreth o {0} i {1} ei datgan
 
 taxLiabilityBetweenYears.checkYourAnswerSectionHeading = Rhwymedigaeth treth {0}

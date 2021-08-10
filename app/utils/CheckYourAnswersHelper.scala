@@ -33,7 +33,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
     val answerRows : Seq[AnswerRow] = Seq(
       bound.yesNoQuestion(
         CYMinusFourEarlierYearsYesNoPage,
-        "earlierYearsLiability",
+        "earlierYearsLiabilityYesNo",
         controllers.routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url,
         date
       )
@@ -44,7 +44,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
       case _ =>
         Some(
           AnswerSection(
-            Some(HtmlFormat.escape(messages("earlierYearsLiability.checkYourAnswerSectionHeading", date))),
+            Some(HtmlFormat.escape(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", date))),
             answerRows
           )
         )
@@ -59,7 +59,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
     val answerRows : Seq[AnswerRow] = Seq(
       bound.yesNoQuestion(
         CYMinusThreeEarlierYearsYesNoPage,
-        "earlierYearsLiability",
+        "earlierYearsLiabilityYesNo",
         controllers.routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode).url,
         date
       )
@@ -70,7 +70,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
       case _ =>
         Some(
           AnswerSection(
-            Some(HtmlFormat.escape(messages("earlierYearsLiability.checkYourAnswerSectionHeading", date))),
+            Some(HtmlFormat.escape(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", date))),
             answerRows
           )
         )
@@ -94,7 +94,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
       ),
       bound.yesNoQuestion(
         DidDeclareTaxToHMRCYesNoPage(taxYear),
-        "didDeclareToHMRC",
+        "didDeclareToHMRCYesNo",
         controllers.routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, taxYear).url,
         toRange
       )

@@ -41,7 +41,7 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider = new YesNoFormProviderWithArguments()
 
-  def form(arguments: Seq[Any]) = formProvider.withPrefix("cyMinusTwo.liability", arguments)
+  def form(arguments: Seq[Any]) = formProvider.withPrefix("cyMinusTwoYesNo.liability", arguments)
 
   val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
   val taxYearStart: String = new TaxYearRange(languageUtils).startYear(CYMinus2TaxYear)

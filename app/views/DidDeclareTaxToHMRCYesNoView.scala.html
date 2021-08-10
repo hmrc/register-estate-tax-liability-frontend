@@ -17,7 +17,7 @@
 @import controllers.routes._
 @import config.FrontendAppConfig
 @import models.TaxYear
-@import views.html.components.{Heading, ErrorSummary, InputYesNo, SubmitButton}
+@import views.html.components.{Heading, ErrorSummary, InputYesNo, SubmitButton, Link}
 
 @this(
     main_template: MainTemplate,
@@ -26,13 +26,14 @@
     heading: Heading,
     errorSummary: ErrorSummary,
     inputYesNo: InputYesNo,
-    submitButton: SubmitButton
+    submitButton: SubmitButton,
+    link: Link
 )
 
 @(form: Form[_], taxYear: TaxYear, toRange: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${errorPrefix(form)}${messages("didDeclareToHMRC.title", toRange)}",
+    title = s"${errorPrefix(form)}${messages("didDeclareToHMRCYesNo.title", toRange)}",
     showBackLink = true
 ) {
 
@@ -40,19 +41,19 @@
 
         @errorSummary(form.errors)
 
-        @heading("didDeclareToHMRC.heading", Some(toRange))
+        @heading("didDeclareToHMRCYesNo.heading", Some(toRange))
 
-        <p>@messages("didDeclareToHMRC.p1", toRange)</p>
+        <p>@messages("didDeclareToHMRCYesNo.p1", toRange)</p>
 
         @inputYesNo(
             field = form("value"),
-            label = messages("didDeclareToHMRC.heading", toRange),
+            label = messages("didDeclareToHMRCYesNo.heading", toRange),
             legendAsHeading = false,
             legendClass = Some("visually-hidden")
         )
 
         @submitButton()
 
-        <p><a href="@appConfig.registerEstateHubOverview">@messages("site.returnToRegistrationProgress")</a></p>
+        <p>@link(appConfig.registerEstateHubOverview, "returnToRegistration", "site.returnToRegistrationProgress")</p>
     }
 }

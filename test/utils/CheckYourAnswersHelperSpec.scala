@@ -45,9 +45,9 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         val result = cyaHelper.earlierThan4YearsAnswers(userAnswers)
 
         result.value mustBe AnswerSection(
-          heading = Some(Html(messages("earlierYearsLiability.checkYourAnswerSectionHeading", cYMinus4StartYear))),
+          heading = Some(Html(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", cYMinus4StartYear))),
           rows = Seq(
-            AnswerRow(label = messages("earlierYearsLiability.checkYourAnswersLabel", cYMinus4StartYear), answer = Html("Yes"),
+            AnswerRow(label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus4StartYear), answer = Html("Yes"),
               changeUrl = routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
             )
           )
@@ -63,9 +63,9 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         val result = cyaHelper.earlierThan3YearsAnswers(userAnswers)
 
         result.value mustBe AnswerSection(
-          heading = Some(Html(messages("earlierYearsLiability.checkYourAnswerSectionHeading", cYMinus3StartYear))),
+          heading = Some(Html(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", cYMinus3StartYear))),
           rows = Seq(
-            AnswerRow(label = messages("earlierYearsLiability.checkYourAnswersLabel", cYMinus3StartYear), answer = Html("Yes"),
+            AnswerRow(label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus3StartYear), answer = Html("Yes"),
               changeUrl = routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode).url
             )
           )
@@ -92,12 +92,12 @@ class CheckYourAnswersHelperSpec extends SpecBase {
           heading = Some(Html(messages("taxLiabilityBetweenYears.checkYourAnswerSectionHeading", taxYearRangeDisplay))),
           rows = Seq(
             AnswerRow(
-              label = messages("cyMinusFour.liability.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("cyMinusFourYesNo.liability.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.CYMinusFourLiabilityController.onPageLoad(NormalMode).url
             ),
             AnswerRow(
-              label = messages("didDeclareToHMRC.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("didDeclareToHMRCYesNo.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, taxYear).url
             )
@@ -124,12 +124,12 @@ class CheckYourAnswersHelperSpec extends SpecBase {
           heading = Some(Html(messages("taxLiabilityBetweenYears.checkYourAnswerSectionHeading", taxYearRangeDisplay))),
           rows = Seq(
             AnswerRow(
-              label = messages("cyMinusThree.liability.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("cyMinusThreeYesNo.liability.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.CYMinusThreeLiabilityController.onPageLoad(NormalMode).url
             ),
             AnswerRow(
-              label = messages("didDeclareToHMRC.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("didDeclareToHMRCYesNo.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, taxYear).url
             )
@@ -156,12 +156,12 @@ class CheckYourAnswersHelperSpec extends SpecBase {
           heading = Some(Html(messages("taxLiabilityBetweenYears.checkYourAnswerSectionHeading", taxYearRangeDisplay))),
           rows = Seq(
             AnswerRow(
-              label = messages("cyMinusTwo.liability.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("cyMinusTwoYesNo.liability.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.CYMinusTwoLiabilityController.onPageLoad(NormalMode).url
             ),
             AnswerRow(
-              label = messages("didDeclareToHMRC.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("didDeclareToHMRCYesNo.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, taxYear).url
             )
@@ -188,12 +188,12 @@ class CheckYourAnswersHelperSpec extends SpecBase {
           heading = Some(Html(messages("taxLiabilityBetweenYears.checkYourAnswerSectionHeading", taxYearRangeDisplay))),
           rows = Seq(
             AnswerRow(
-              label = messages("cyMinusOne.liability.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("cyMinusOneYesNo.liability.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.CYMinusOneLiabilityController.onPageLoad(NormalMode).url
             ),
             AnswerRow(
-              label = messages("didDeclareToHMRC.checkYourAnswersLabel", taxYearRangeDisplay),
+              label = messages("didDeclareToHMRCYesNo.checkYourAnswersLabel", taxYearRangeDisplay),
               answer = Html("Yes"),
               changeUrl = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, taxYear).url
             )
