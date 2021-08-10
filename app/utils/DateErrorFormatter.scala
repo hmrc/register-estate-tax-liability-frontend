@@ -22,7 +22,8 @@ import play.api.i18n.Messages
 object DateErrorFormatter {
 
   def formatArgs(args: Seq[Any])(implicit messages: Messages): Seq[String] = {
-    args.map(arg => messages(s"date.$arg").toLowerCase)
+    val dateArgs = Seq("day", "month", "year")
+    args.map(arg => if (dateArgs.contains(arg)) messages(s"date.$arg").toLowerCase else arg.toString)
   }
 
   def addErrorClass(error: Option[FormError], dateArg: String): String = {
