@@ -47,11 +47,11 @@ timeout.keep-alive-button = Yn eich blaen â’r cais
 unauthorised.title = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 unauthorised.heading = Ni allwch ddefnyddio’r gwasanaeth hwn gyda’r cyfrif hwn
 
-earlierYearsLiability.checkYourAnswerSectionHeading = Rhwymedigaeth treth cyn {0}
-earlierYearsLiability.checkYourAnswersLabel = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
-earlierYearsLiability.title = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
-earlierYearsLiability.heading = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
-earlierYearsLiability.p1 = Bydd angen i chi anfon rhestr o unrhyw incwm sy’n agored i dreth.
+earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading = Rhwymedigaeth treth cyn {0}
+earlierYearsLiabilityYesNo.checkYourAnswersLabel = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
+earlierYearsLiabilityYesNo.title = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
+earlierYearsLiabilityYesNo.heading = Mae’n rhaid i chi roi gwybod i CThEM a oedd angen i’r ystâd dalu unrhyw dreth cyn {0}
+earlierYearsLiabilityYesNo.p1 = Bydd angen i chi anfon rhestr o unrhyw incwm sy’n agored i dreth.
 
 cyMinusFourYesNo.liability.checkYourAnswersLabel = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
 cyMinusFourYesNo.liability.title = A oedd angen i’r ystâd dalu unrhyw dreth o {0} ymlaen?
