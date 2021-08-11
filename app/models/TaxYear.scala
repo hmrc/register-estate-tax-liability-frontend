@@ -28,19 +28,19 @@ sealed trait TaxYear {
 
 case object CYMinus4TaxYear extends TaxYear {
   override val year: Int = 4
-  override val messagePrefix: String = "cyMinusFour"
+  override val messagePrefix: String = "cyMinusFourYesNo"
 }
 case object CYMinus3TaxYear extends TaxYear {
   override val year: Int = 3
-  override val messagePrefix: String = "cyMinusThree"
+  override val messagePrefix: String = "cyMinusThreeYesNo"
 }
 case object CYMinus2TaxYear extends TaxYear {
   override val year: Int = 2
-  override val messagePrefix: String = "cyMinusTwo"
+  override val messagePrefix: String = "cyMinusTwoYesNo"
 }
 case object CYMinus1TaxYear extends TaxYear {
   override val year: Int = 1
-  override val messagePrefix: String = "cyMinusOne"
+  override val messagePrefix: String = "cyMinusOneYesNo"
 }
 
 object TaxYear {

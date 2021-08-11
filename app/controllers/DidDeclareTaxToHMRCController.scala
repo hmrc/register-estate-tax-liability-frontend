@@ -41,7 +41,7 @@ class DidDeclareTaxToHMRCController @Inject()(
                                                taxYearRange: TaxYearRange
                                              )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def form(ranges: Seq[String]) = formProvider.withPrefix("didDeclareToHMRC", ranges)
+  def form(ranges: Seq[String]) = formProvider.withPrefix("didDeclareToHMRCYesNo", ranges)
 
   def onPageLoad(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData {
     implicit request =>

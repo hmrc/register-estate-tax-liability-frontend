@@ -20,7 +20,6 @@ import com.google.inject.Inject
 import models.UserAnswers
 import pages.QuestionPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import viewmodels.AnswerRow
 
 class AnswerRowConverter @Inject()() {
@@ -36,7 +35,7 @@ class AnswerRowConverter @Inject()() {
                       arguments: Any*): Option[AnswerRow] = {
       userAnswers.get(query) map {x =>
         AnswerRow(
-          HtmlFormat.escape(messages(s"$labelKey.checkYourAnswersLabel", arguments: _*)),
+          messages(s"$labelKey.checkYourAnswersLabel", arguments: _*),
           CheckAnswersFormatters.yesOrNo(x),
           changeUrl
         )

@@ -25,7 +25,7 @@ import views.html.DidDeclareTaxToHMRCYesNoView
 
 class DidDeclareTaxToHMRCYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "didDeclareToHMRC"
+  val messageKeyPrefix = "didDeclareToHMRCYesNo"
 
   val form: Form[Boolean] = new YesNoFormProviderWithArguments()
     .withPrefix(messageKeyPrefix, Seq("6 April 2019", "5 April 2020"))

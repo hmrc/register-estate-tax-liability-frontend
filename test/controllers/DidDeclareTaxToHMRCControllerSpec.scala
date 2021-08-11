@@ -40,7 +40,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
   override def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new YesNoFormProviderWithArguments()
-  def form(arguments: Seq[Any]) = formProvider.withPrefix("didDeclareToHMRC", arguments)
+  def form(arguments: Seq[Any]) = formProvider.withPrefix("didDeclareToHMRCYesNo", arguments)
 
   def didDeclareRoute(year: TaxYear) = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, year).url
 

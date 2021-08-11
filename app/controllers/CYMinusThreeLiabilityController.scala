@@ -41,7 +41,7 @@ class CYMinusThreeLiabilityController @Inject()(
                                  taxYearRange: TaxYearRange
                                )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def form(ranges: Seq[String]) = formProvider.withPrefix("cyMinusThree.liability", ranges)
+  def form(ranges: Seq[String]) = formProvider.withPrefix("cyMinusThreeYesNo.liability", ranges)
 
   private val workingTaxYear = CYMinus3TaxYear
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {

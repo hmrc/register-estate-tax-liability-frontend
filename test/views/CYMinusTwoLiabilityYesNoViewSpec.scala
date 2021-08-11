@@ -25,7 +25,7 @@ import views.html.CYMinusTwoYesNoView
 
 class CYMinusTwoLiabilityYesNoViewSpec extends YesNoViewBehaviours {
 
-  val messageKeyPrefix = "cyMinusTwo.liability"
+  val messageKeyPrefix = "cyMinusTwoYesNo.liability"
   val taxYear = "tax range"
 
   val form: Form[Boolean] = new YesNoFormProviderWithArguments().withPrefix(messageKeyPrefix, Seq("6 April 2019", "5 April 2020"))

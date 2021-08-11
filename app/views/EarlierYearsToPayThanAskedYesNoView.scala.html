@@ -16,30 +16,32 @@
 
 @import controllers.routes._
 @import config.FrontendAppConfig
+@import views.html.components.{Heading, SubmitButton, Link}
 
 @this(
-        main_template: MainTemplate,
-        formHelper: FormWithCSRF,
-        appConfig: FrontendAppConfig
+    main_template: MainTemplate,
+    formHelper: FormWithCSRF,
+    appConfig: FrontendAppConfig,
+    heading: Heading,
+    submitButton: SubmitButton,
+    link: Link
 )
 
 @(date: String, mode: Mode, continueUrl: Call)(implicit request: Request[_], messages: Messages)
 
 @main_template(
-    title = s"${messages("earlierYearsLiability.title", date)}"
+    title = s"${messages("earlierYearsLiabilityYesNo.title", date)}",
+    showBackLink = true
 ) {
 
-        @components.back_link()
+    @formHelper(action = continueUrl, 'autoComplete -> "off") {
 
-        <h1 class="heading-large">@messages("earlierYearsLiability.heading", date)</h1>
+        @heading("earlierYearsLiabilityYesNo.heading", Some(date))
 
-        <p>@messages("earlierYearsLiability.p1")</p>
+        <p>@messages("earlierYearsLiabilityYesNo.p1")</p>
 
-        @formHelper(action = continueUrl, 'autoComplete -> "off") {
+        @submitButton()
 
-            @components.submit_button()
-
-        }
-
-        <p><a href="@appConfig.registerEstateHubOverview">@messages("site.returnToRegistrationProgress")</a></p>
+        <p>@link(appConfig.registerEstateHubOverview, "returnToRegistration", "site.returnToRegistrationProgress")</p>
+    }
 }
