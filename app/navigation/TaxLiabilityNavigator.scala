@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class TaxLiabilityNavigator @Inject()() extends Navigator {
     case DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear) => rts.CYMinusThreeLiabilityController.onPageLoad(NormalMode)
     case DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear) => rts.CYMinusTwoLiabilityController.onPageLoad(NormalMode)
     case DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear) => rts.CYMinusOneLiabilityController.onPageLoad(NormalMode)
-    case DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear) => rts.CheckYourAnswersController.onPageLoad()
+    case DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear) => rts.CheckYourAnswersController.onPageLoad
   }
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
@@ -50,7 +50,7 @@ class TaxLiabilityNavigator @Inject()() extends Navigator {
     )
     case CYMinusOneYesNoPage => ua => yesNoNav(ua, CYMinusOneYesNoPage,
       yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus1TaxYear),
-      noCall = rts.CheckYourAnswersController.onPageLoad()
+      noCall = rts.CheckYourAnswersController.onPageLoad
     )
   }
 
