@@ -17,12 +17,12 @@
 package services
 
 import java.time.LocalDate
+
 import base.SpecBase
 import connectors.EstatesConnector
 import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, TaxLiabilityYear, YearReturnType}
 import org.joda.time.{DateTime, DateTimeUtils}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.any
 import pages.DidDeclareTaxToHMRCYesNoPage
 import play.api.inject.bind
 import play.api.test.Helpers._

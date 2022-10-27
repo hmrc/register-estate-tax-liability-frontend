@@ -16,20 +16,19 @@
 
 package controllers
 
+import java.time.LocalDate
+
 import base.SpecBase
 import connectors.EstatesConnector
 import models.NormalMode
 import org.joda.time.{DateTime, DateTimeUtils}
-import org.mockito.Matchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.ArgumentMatchers.any
 import pages.DateOfDeathPage
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.LocalDateService
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class IndexControllerSpec extends SpecBase {
@@ -64,7 +63,7 @@ class IndexControllerSpec extends SpecBase {
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(initialDateOfDeath))
 
-        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -98,7 +97,7 @@ class IndexControllerSpec extends SpecBase {
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(newDateOfDeath))
 
-        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -132,7 +131,7 @@ class IndexControllerSpec extends SpecBase {
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -164,7 +163,7 @@ class IndexControllerSpec extends SpecBase {
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -196,7 +195,7 @@ class IndexControllerSpec extends SpecBase {
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
         val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -229,7 +228,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -258,7 +257,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -292,7 +291,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -321,7 +320,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -355,7 +354,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
@@ -384,7 +383,7 @@ class IndexControllerSpec extends SpecBase {
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(Json.obj())))
+          when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
 
           val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
 
