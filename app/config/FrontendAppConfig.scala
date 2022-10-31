@@ -59,4 +59,8 @@ class FrontendAppConfig @Inject() (configuration: Configuration,
   def routeToSwitchLanguage: String => Call =
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
+  val cachettl: Long = configuration.get[Long]("mongodb.timeToLiveInSeconds")
+
+  val dropIndexes: Boolean = configuration.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
+
 }

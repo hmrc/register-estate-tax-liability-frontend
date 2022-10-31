@@ -21,17 +21,17 @@ import config.annotations.TaxLiability
 import forms.YesNoFormProviderWithArguments
 import models.{CYMinus4TaxYear, NormalMode, TaxYearRange}
 import navigation.Navigator
-import org.mockito.Matchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import org.mockito.ArgumentMatchers.any
+import org.mockito.MockitoSugar
 import pages.CYMinusFourYesNoPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.CYMinusFourYesNoView
 import uk.gov.hmrc.play.language.LanguageUtils
+import views.html.CYMinusFourYesNoView
+
 import scala.concurrent.Future
 
 class CYMinusFourLiabilityControllerSpec extends SpecBase with MockitoSugar {

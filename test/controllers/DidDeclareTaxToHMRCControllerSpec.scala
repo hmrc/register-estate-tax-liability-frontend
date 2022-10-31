@@ -21,9 +21,8 @@ package controllers
  import forms.YesNoFormProviderWithArguments
  import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange}
  import navigation.Navigator
- import org.mockito.Matchers.any
- import org.mockito.Mockito.when
- import org.scalatestplus.mockito.MockitoSugar
+ import org.mockito.ArgumentMatchers.any
+ import org.mockito.MockitoSugar
  import pages.DidDeclareTaxToHMRCYesNoPage
  import play.api.inject.bind
  import play.api.mvc.Call

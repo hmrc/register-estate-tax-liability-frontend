@@ -17,76 +17,60 @@
 package repositories
 
 import java.time.LocalDateTime
+import java.util.concurrent.TimeUnit
+import org.mongodb.scala.model.Indexes.ascending
+import config.FrontendAppConfig
 import javax.inject.Inject
 import models.UserAnswers
-import play.api.Configuration
+import org.mongodb.scala.model.{FindOneAndUpdateOptions, IndexModel, IndexOptions, ReplaceOptions, Updates}
 import play.api.libs.json._
-import play.modules.reactivemongo.ReactiveMongoApi
-import reactivemongo.api.WriteConcern
-import reactivemongo.api.indexes.IndexType
-import reactivemongo.play.json.collection.Helpers.idWrites
-import reactivemongo.play.json.collection.JSONCollection
-
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+import org.mongodb.scala.model.Filters.equal
 import scala.concurrent.{ExecutionContext, Future}
 
 class DefaultSessionRepository @Inject()(
-                                          val mongo: ReactiveMongoApi,
-                                          val config: Configuration
+                                          val mongoComponent: MongoComponent,
+                                          val config: FrontendAppConfig
                                         )(implicit val ec: ExecutionContext)
-  extends SessionRepository
-    with IndexManager {
+  extends PlayMongoRepository[UserAnswers](
+    collectionName = "user-answers",
+    mongoComponent = mongoComponent,
+    domainFormat = Format(UserAnswers.reads,UserAnswers.writes),
+    indexes = Seq(
+      IndexModel(
+        ascending("lastUpdated"),
+        IndexOptions()
+          .unique(false)
+          .name("user-answers-last-updated-index")
+          .expireAfter(config.cachettl, TimeUnit.SECONDS)
+      )
+    ), replaceIndexes = config.dropIndexes
 
-  override val collectionName: String = "user-answers"
+  )  with SessionRepository {
 
-  private val cacheTtl = config.get[Int]("mongodb.timeToLiveInSeconds")
+  override def get(id: String): Future[Option[UserAnswers]] = {
+    val selector = equal("_id", id)
+    val modifier = Updates.set("updatedAt", LocalDateTime.now())
+    val updateOption = new FindOneAndUpdateOptions().upsert(false)
 
-  private def collection: Future[JSONCollection] = for {
-    _ <- ensureIndexes
-    col <- mongo.database.map(_.collection[JSONCollection](collectionName))
-  } yield col
-
-  private val lastUpdatedIndex = MongoIndex(
-    key     = Seq("lastUpdated" -> IndexType.Ascending),
-    name    = "user-answers-last-updated-index",
-    expireAfterSeconds = Some(cacheTtl)
-  )
-
-  private def ensureIndexes: Future[Unit] = for {
-    col <- mongo.database.map(_.collection[JSONCollection](collectionName))
-    _ <- col.indexesManager.ensure(lastUpdatedIndex)
-  } yield ()
-
-  override def get(id: String): Future[Option[UserAnswers]] =
-    collection.flatMap(_.find(Json.obj("_id" -> id), None).one[UserAnswers])
-
-  override def set(userAnswers: UserAnswers): Future[Boolean] = {
-
-    val selector = Json.obj(
-      "_id" -> userAnswers.id
-    )
-
-    val modifier = Json.obj(
-      "$set" -> (userAnswers copy (lastUpdated = LocalDateTime.now))
-    )
-
-    collection.flatMap {
-      _.update(ordered = false)
-        .one(selector, modifier, upsert = true).map {
-          lastError =>
-            lastError.ok
-      }
-    }
+    collection.findOneAndUpdate(selector, modifier, updateOption).toFutureOption()
   }
 
-  override def resetCache(id: String): Future[Option[JsObject]] = {
+  override def set(userAnswers: UserAnswers): Future[Boolean] = {
+    val selector = equal("_id" , userAnswers.id)
+    val modifier = userAnswers.copy(lastUpdated = LocalDateTime.now)
+    val options = ReplaceOptions().upsert(true)
 
-    val selector = Json.obj(
-      "_id" -> id
-    )
+    collection.replaceOne(selector,modifier,options).headOption().map(_.exists(_.wasAcknowledged()))
 
-    collection.flatMap(_.findAndRemove(selector, None, None, WriteConcern.Default, None, None, Seq.empty).map(
-      _.value
-    ))
+  }
+
+  override def resetCache(id: String): Future[Option[Boolean]] = {
+    val selector = equal("_id" , id)
+
+    collection.deleteOne(selector).headOption().map(_.map(_.wasAcknowledged()))
+
   }
 }
 
@@ -96,5 +80,5 @@ trait SessionRepository {
 
   def set(userAnswers: UserAnswers): Future[Boolean]
 
-  def resetCache(internalId: String): Future[Option[JsObject]]
+  def resetCache(internalId: String): Future[Option[Boolean]]
 }
