@@ -20,7 +20,6 @@ import forms.YesNoFormProviderWithArguments
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 import views.behaviours.YesNoViewBehaviours
 import views.html.CYMinusFourYesNoView
 
@@ -32,7 +31,7 @@ class CYMinusFourLiabilityYesNoViewSpec extends YesNoViewBehaviours {
   val form: Form[Boolean] = new YesNoFormProviderWithArguments().withPrefix(messageKeyPrefix, Seq("6 April 2019", "5 April 2020"))
 
   "CYMinusFourLiabilityYesNo view" must {
-    
+
     val view = viewFor[CYMinusFourYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
