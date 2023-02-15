@@ -28,7 +28,9 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import org.mongodb.scala.model.Filters.equal
 import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Singleton
 
+@Singleton
 class DefaultSessionRepository @Inject()(
                                           val mongoComponent: MongoComponent,
                                           val config: FrontendAppConfig
