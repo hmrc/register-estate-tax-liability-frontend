@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import forms.YesNoFormProviderWithArguments
 import models.NormalMode
 import play.api.data.Form
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 import views.behaviours.YesNoViewBehaviours
 import views.html.CYMinusFourYesNoView
 
@@ -31,6 +32,8 @@ class CYMinusFourLiabilityYesNoViewSpec extends YesNoViewBehaviours {
   val form: Form[Boolean] = new YesNoFormProviderWithArguments().withPrefix(messageKeyPrefix, Seq("6 April 2019", "5 April 2020"))
 
   "CYMinusFourLiabilityYesNo view" must {
+
+    val contactConfig = injector.instanceOf[ContactFrontendConfig]
 
     val view = viewFor[CYMinusFourYesNoView](Some(emptyUserAnswers))
 
