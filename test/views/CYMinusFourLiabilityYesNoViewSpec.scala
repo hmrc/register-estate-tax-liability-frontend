@@ -32,9 +32,7 @@ class CYMinusFourLiabilityYesNoViewSpec extends YesNoViewBehaviours {
   val form: Form[Boolean] = new YesNoFormProviderWithArguments().withPrefix(messageKeyPrefix, Seq("6 April 2019", "5 April 2020"))
 
   "CYMinusFourLiabilityYesNo view" must {
-
-    val contactConfig = injector.instanceOf[ContactFrontendConfig]
-
+    
     val view = viewFor[CYMinusFourYesNoView](Some(emptyUserAnswers))
 
     def applyView(form: Form[_]): HtmlFormat.Appendable =
