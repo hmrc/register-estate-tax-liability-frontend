@@ -44,7 +44,7 @@ class MessagesSpec extends SpecBase {
 
     "have messages for default and cy only" in {
       messagesApi.messages("en").size mustBe 0
-      val englishMessageCount = messagesApi.messages("default").size - commonProvidedKeys.size
+      val englishMessageCount = messagesApi.messages("default").size
 
       messagesApi.messages("cy").size mustBe englishMessageCount
     }
@@ -145,11 +145,11 @@ class MessagesSpec extends SpecBase {
 
   private lazy val displayLine = "\n" + ("@" * 42) + "\n"
 
-  private lazy val defaultMessages: Map[String, String] = getExpectedMessages("default") -- commonProvidedKeys
+  private lazy val defaultMessages: Map[String, String] = getExpectedMessages("default")
 
   private lazy val welshMessages: Map[String, String] = getExpectedMessages("cy")
 
-  private def getExpectedMessages(languageCode: String) =
+  private def getExpectedMessages(languageCode: String): Map[String, String] =
     messagesApi.messages.getOrElse(languageCode, throw new Exception(s"Missing messages for $languageCode"))
 
   private def mismatchingKeys(defaultKeySet: Set[String], welshKeySet: Set[String]) = {
@@ -161,9 +161,5 @@ class MessagesSpec extends SpecBase {
 
     test1 ++ test2
   }
-
-  private val commonProvidedKeys = Set(
-    "this.section.is"
-  )
 
 }
