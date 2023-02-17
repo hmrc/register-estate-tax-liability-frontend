@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 HM Revenue & Customs
+ * Copyright 2023 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import org.mongodb.scala.model.Filters.equal
 import scala.concurrent.{ExecutionContext, Future}
+import javax.inject.Singleton
 
+@Singleton
 class DefaultSessionRepository @Inject()(
                                           val mongoComponent: MongoComponent,
                                           val config: FrontendAppConfig

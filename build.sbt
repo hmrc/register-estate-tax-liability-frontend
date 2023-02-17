@@ -12,7 +12,6 @@ lazy val root = (project in file("."))
   .settings(
     DefaultBuildSettings.scalaSettings,
     DefaultBuildSettings.defaultSettings(),
-    SbtDistributablesPlugin.publishingSettings,
     inConfig(Test)(testSettings),
     scalaVersion := "2.12.15",
     SilencerSettings(),
@@ -40,8 +39,6 @@ lazy val root = (project in file("."))
     scalacOptions ++= Seq("-feature"),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
-    evictionWarningOptions in update :=
-      EvictionWarningOptions.default.withWarnScalaVersionEviction(false),
     resolvers ++= Seq(
       Resolver.jcenterRepo
     ),
