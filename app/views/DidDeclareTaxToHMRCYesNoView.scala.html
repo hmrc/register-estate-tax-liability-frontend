@@ -37,7 +37,7 @@
     showBackLink = true
 ) {
 
-    @formHelper(action = DidDeclareTaxToHMRCController.onSubmit(mode, taxYear), 'autoComplete -> "off") {
+    @formHelper(action = DidDeclareTaxToHMRCController.onSubmit(mode, taxYear), Symbol("autoComplete") -> "off") {
 
         @errorSummary(form.errors)
 

@@ -17,11 +17,9 @@
 package services
 
 import java.time.LocalDate
-
 import base.SpecBase
 import connectors.EstatesConnector
 import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, TaxLiabilityYear, YearReturnType}
-import org.joda.time.{DateTime, DateTimeUtils}
 import org.mockito.ArgumentMatchers.any
 import pages.DidDeclareTaxToHMRCYesNoPage
 import play.api.inject.bind
@@ -35,13 +33,23 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
+  val cyTaxYear: LocalDate = TaxYear.now()
+
+  def cyMinus1TaxYear: LocalDate = cyTaxYear.minusYears(1)
+
+  def cyMinus2TaxYear: LocalDate = cyTaxYear.minusYears(2)
+
+  def cyMinus3TaxYear: LocalDate = cyTaxYear.minusYears(3)
+
+  def cyMinus4TaxYear: LocalDate = cyTaxYear.minusYears(4)
+
+  def cyMinus5TaxYear: LocalDate = cyTaxYear.minusYears(5)
+
   def setCurrentDate(date: LocalDate): LocalDateService = new LocalDateService {
     override def now: LocalDate = date
   }
 
-  def setCurrentDateTime(date: LocalDate) = {
-    DateTimeUtils.setCurrentMillisFixed(new DateTime(date.toString).getMillis)
-  }
+  def twoDigitYearAsString(date: LocalDate): String = date.getYear.toString.substring(2)
 
   "getFirstYearOfTaxLiability" must {
 
@@ -50,16 +58,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is before the december deadline and date of death is more than 4 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -67,22 +73,20 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2016), earlierYears = true)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus4TaxYear.getYear), earlierYears = true)
       }
 
       "the current date is on the december deadline and date of death is more than 4 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 12, 22)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 22)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -90,7 +94,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2016), earlierYears = true)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus4TaxYear.getYear), earlierYears = true)
       }
     }
 
@@ -99,16 +103,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is after the december deadline and date of death is more than 3 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateAfterDec23rd = LocalDate.of(2020, 12, 23)
-
-        setCurrentDateTime(dateAfterDec23rd)
+        val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateAfterDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -116,7 +118,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2017), earlierYears = true)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus3TaxYear.getYear), earlierYears = true)
       }
     }
 
@@ -124,16 +126,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is before the december deadline and date of death is 4 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2016, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus4TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -141,7 +141,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2016), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus4TaxYear.getYear), earlierYears = false)
       }
     }
 
@@ -149,16 +149,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is before the december deadline and date of death is 3 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2017, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus3TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -166,22 +164,20 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2017), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus3TaxYear.getYear), earlierYears = false)
       }
 
       "the current date is after the december deadline and date of death is 3 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 12, 23)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2017, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus3TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -189,7 +185,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2017), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus3TaxYear.getYear), earlierYears = false)
       }
     }
 
@@ -197,16 +193,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is before the december deadline and date of death is 2 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2018, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -214,22 +208,20 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2018), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus2TaxYear.getYear), earlierYears = false)
       }
 
       "the current date is after the december deadline and date of death is 2 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 12, 23)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2018, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -237,7 +229,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2018), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus2TaxYear.getYear), earlierYears = false)
       }
     }
 
@@ -245,16 +237,14 @@ class TaxLiabilityServiceSpec extends SpecBase {
       "the current date is before the december deadline and date of death is 1 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2019, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus1TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -262,22 +252,20 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2019), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus1TaxYear.getYear), earlierYears = false)
       }
 
       "the current date is after the december deadline and date of death is 3 years ago" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 12, 23)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2019, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus1TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -285,7 +273,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getFirstYearOfTaxLiability()
 
-        result.futureValue mustEqual TaxLiabilityYear(TaxYear(2019), earlierYears = false)
+        result.futureValue mustEqual TaxLiabilityYear(TaxYear(cyMinus1TaxYear.getYear), earlierYears = false)
       }
     }
   }
@@ -301,7 +289,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
         .build()
 
-      val dateOfDeath = LocalDate.of(2018, 1, 1)
+      val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 1, 1)
 
       when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -309,7 +297,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       val result = service.getTaxYearOfDeath()
 
-      result.futureValue mustEqual TaxYear(2017)
+      result.futureValue mustEqual TaxYear(cyMinus3TaxYear.getYear)
       }
 
       "date of death is between April 6th and Dec 31st (inclusive)" in {
@@ -320,7 +308,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .build()
 
-        val dateOfDeath = LocalDate.of(2018, 6, 1)
+        val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 6, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -328,7 +316,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
         val result = service.getTaxYearOfDeath()
 
-        result.futureValue mustEqual TaxYear(2018)
+        result.futureValue mustEqual TaxYear(cyMinus2TaxYear.getYear)
       }
     }
   }
@@ -396,9 +384,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 5, 5)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -409,10 +395,10 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "17", taxConsequence = true),
-          YearReturnType(taxReturnYear = "18", taxConsequence = true),
-          YearReturnType(taxReturnYear = "19", taxConsequence = true),
-          YearReturnType(taxReturnYear = "20", taxConsequence = false)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus3TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus2TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus1TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = false)
         )
       }
 
@@ -423,9 +409,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 10, 6)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 10, 6)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -436,10 +420,10 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "17", taxConsequence = true),
-          YearReturnType(taxReturnYear = "18", taxConsequence = true),
-          YearReturnType(taxReturnYear = "19", taxConsequence = true),
-          YearReturnType(taxReturnYear = "20", taxConsequence = true)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus3TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus2TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus1TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = true)
         )
       }
 
@@ -454,9 +438,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 5, 5)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -467,9 +449,9 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "17", taxConsequence = true),
-          YearReturnType(taxReturnYear = "19", taxConsequence = true),
-          YearReturnType(taxReturnYear = "20", taxConsequence = false)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus3TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus1TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = false)
         )
       }
 
@@ -482,9 +464,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 5, 5)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -495,8 +475,8 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "19", taxConsequence = true),
-          YearReturnType(taxReturnYear = "20", taxConsequence = false)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus1TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = false)
         )
       }
 
@@ -509,9 +489,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 5, 5)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -522,8 +500,8 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "17", taxConsequence = true),
-          YearReturnType(taxReturnYear = "19", taxConsequence = true)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus3TaxYear), taxConsequence = true),
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyMinus1TaxYear), taxConsequence = true)
         )
       }
 
@@ -539,9 +517,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 10, 6)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 10, 6)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -552,7 +528,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "20", taxConsequence = true)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = true)
         )
       }
 
@@ -564,9 +540,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val userAnswers = emptyUserAnswers
           .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
 
-        val today = LocalDate.of(2020, 10, 5)
-
-        setCurrentDateTime(today)
+        val today = LocalDate.of(cyTaxYear.getYear, 10, 5)
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(today)))
@@ -577,7 +551,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
         val expected = service.evaluateTaxYears(userAnswers)
 
         expected mustBe List(
-          YearReturnType(taxReturnYear = "20", taxConsequence = false)
+          YearReturnType(taxReturnYear = twoDigitYearAsString(cyTaxYear), taxConsequence = false)
         )
       }
 
