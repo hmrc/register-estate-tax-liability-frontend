@@ -16,43 +16,47 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import base.SpecBase
 import connectors.EstatesConnector
 import models.NormalMode
-import org.joda.time.{DateTime, DateTimeUtils}
 import org.mockito.ArgumentMatchers.any
 import pages.DateOfDeathPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import services.LocalDateService
+import uk.gov.hmrc.time.TaxYear
 
+import java.time.LocalDate
 import scala.concurrent.Future
 
 class IndexControllerSpec extends SpecBase {
 
+  val cyTaxYear: LocalDate = TaxYear.now()
+
+  def cyMinus1TaxYear: LocalDate = cyTaxYear.minusYears(1)
+
+  def cyMinus2TaxYear: LocalDate = cyTaxYear.minusYears(2)
+
+  def cyMinus3TaxYear: LocalDate = cyTaxYear.minusYears(3)
+
+  def cyMinus4TaxYear: LocalDate = cyTaxYear.minusYears(4)
+
+  def cyMinus5TaxYear: LocalDate = cyTaxYear.minusYears(5)
+
+  def setCurrentDate(date: LocalDate): LocalDateService = new LocalDateService {
+    override def now: LocalDate = date
+  }
+
   "Index Controller" must {
-
-    def setCurrentDate(date: LocalDate): LocalDateService = new LocalDateService {
-      override def now: LocalDate = date
-    }
-
-    def setCurrentDateTime(date: LocalDate) = {
-      DateTimeUtils.setCurrentMillisFixed(new DateTime(date.toString).getMillis)
-    }
 
     "for an existing session" when {
 
       "continue session if date of death is not changed" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
-
-        val initialDateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
+        val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         val existingUserAnswers = emptyUserAnswers.set(DateOfDeathPage, initialDateOfDeath).success.value
 
@@ -80,11 +84,8 @@ class IndexControllerSpec extends SpecBase {
       "clear user answers if the user returns and the date of death has changed" in {
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
-
-        val initialDateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
+        val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         val existingUserAnswers = emptyUserAnswers.set(DateOfDeathPage, initialDateOfDeath).success.value
 
@@ -93,7 +94,7 @@ class IndexControllerSpec extends SpecBase {
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val newDateOfDeath = LocalDate.of(2018, 5, 1)
+        val newDateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(newDateOfDeath))
 
@@ -118,16 +119,13 @@ class IndexControllerSpec extends SpecBase {
 
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
-
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -150,16 +148,14 @@ class IndexControllerSpec extends SpecBase {
 
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-        setCurrentDateTime(dateBeforeDec23rd)
+        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2016, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus4TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -182,16 +178,14 @@ class IndexControllerSpec extends SpecBase {
 
         val mockEstatesConnector = mock[EstatesConnector]
 
-        val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
-
-        setCurrentDateTime(dateAfterDec23rd)
+        val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateAfterDec23rd)))
           .build()
 
-        val dateOfDeath = LocalDate.of(2015, 5, 1)
+        val dateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -215,16 +209,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-          setCurrentDateTime(dateBeforeDec23rd)
+          val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2017, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus3TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -244,16 +236,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
-
-          setCurrentDateTime(dateAfterDec23rd)
+          val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateAfterDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2017, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus3TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -278,16 +268,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-          setCurrentDateTime(dateBeforeDec23rd)
+          val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2018, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -307,16 +295,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
-
-          setCurrentDateTime(dateAfterDec23rd)
+          val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateAfterDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2018, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -341,16 +327,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateBeforeDec23rd = LocalDate.of(2020, 5, 1)
-
-          setCurrentDateTime(dateBeforeDec23rd)
+          val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2019, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus1TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
@@ -370,16 +354,14 @@ class IndexControllerSpec extends SpecBase {
 
           val mockEstatesConnector = mock[EstatesConnector]
 
-          val dateAfterDec23rd = LocalDate.of(2020, 12, 25)
-
-          setCurrentDateTime(dateAfterDec23rd)
+          val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
           val application = applicationBuilder(userAnswers = None)
             .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
             .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateAfterDec23rd)))
             .build()
 
-          val dateOfDeath = LocalDate.of(2019, 5, 1)
+          val dateOfDeath = LocalDate.of(cyMinus1TaxYear.getYear, 5, 1)
 
           when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 

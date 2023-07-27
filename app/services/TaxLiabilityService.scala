@@ -40,19 +40,13 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
   private val LAST_4_TAX_YEARS = 4
   private val LAST_3_TAX_YEARS = 3
 
-  private val currentTaxYearStartDate = LocalDate.of(
-    TaxYear.current.starts.getYear,
-    TaxYear.current.starts.getMonthOfYear,
-    TaxYear.current.starts.getDayOfMonth
-  )
-
   private val decemberDeadline = LocalDate.of(TaxYear.current.starts.getYear, DEADLINE_MONTH, DEADLINE_DAY)
 
   def getFirstYearOfTaxLiability()(implicit hc: HeaderCarrier): Future[TaxLiabilityYear] = {
 
     val today = localDateService.now
 
-    val todayIsAfterTaxYearStart : Boolean = today.isAfter(currentTaxYearStartDate.minusDays(1))
+    val todayIsAfterTaxYearStart : Boolean = today.isAfter(TaxYear.current.starts.minusDays(1))
     val isNotAfterDecemberDeadline : Boolean = today.isBefore(decemberDeadline.plusDays(1))
 
     val oldestYearToShow = if (todayIsAfterTaxYearStart && isNotAfterDecemberDeadline) {
