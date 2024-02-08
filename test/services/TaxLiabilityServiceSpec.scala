@@ -33,7 +33,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
-  val cyTaxYear: LocalDate = TaxYear.now()
+  val cyTaxYear: LocalDate = TaxYear.current.starts
 
   def cyMinus1TaxYear: LocalDate = cyTaxYear.minusYears(1)
 
