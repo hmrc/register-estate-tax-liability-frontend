@@ -21,6 +21,8 @@ import base.SpecBase
 import connectors.EstatesConnector
 import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, TaxLiabilityYear, YearReturnType}
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.when
 import pages.DidDeclareTaxToHMRCYesNoPage
 import play.api.inject.bind
 import play.api.test.Helpers._
@@ -56,7 +58,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
     "return the cy minus four tax liability and and true to earlier years" when {
 
       "the current date is before the december deadline and date of death is more than 4 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -77,7 +79,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
       }
 
       "the current date is on the december deadline and date of death is more than 4 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 22)
 
@@ -101,7 +103,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
     "return the cy minus three tax liability and and true to earlier years" when {
 
       "the current date is after the december deadline and date of death is more than 3 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
@@ -124,7 +126,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
     "return the cy minus four tax liability and and false to earlier years" when {
       "the current date is before the december deadline and date of death is 4 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -147,7 +149,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
     "return the cy minus three tax liability and and false to earlier years" when {
       "the current date is before the december deadline and date of death is 3 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -168,7 +170,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
       }
 
       "the current date is after the december deadline and date of death is 3 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
@@ -191,7 +193,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
     "return the cy minus two tax liability and and false to earlier years" when {
       "the current date is before the december deadline and date of death is 2 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -212,7 +214,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
       }
 
       "the current date is after the december deadline and date of death is 2 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
@@ -235,7 +237,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
     "return the cy minus one tax liability and and false to earlier years" when {
       "the current date is before the december deadline and date of death is 1 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -256,7 +258,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
       }
 
       "the current date is after the december deadline and date of death is 3 years ago" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 23)
 
@@ -283,7 +285,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "date of death is between Jan 1st and April 5th (inclusive)" in {
 
-      val mockEstatesConnector = mock[EstatesConnector]
+      val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
       val application = applicationBuilder(userAnswers = None)
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -302,7 +304,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "date of death is between April 6th and Dec 31st (inclusive)" in {
 
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val application = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -324,7 +326,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
   ".sendTaxLiability" must {
 
     "clear out and send tax liability transform to estates when there is a liability" in {
-      val mockEstatesConnector = mock[EstatesConnector]
+      val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
       val application = applicationBuilder(userAnswers = None)
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
@@ -350,7 +352,7 @@ class TaxLiabilityServiceSpec extends SpecBase {
     }
 
     "clear out tax liability transforms when there is no liability" in {
-      val mockEstatesConnector = mock[EstatesConnector]
+      val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
       val application = applicationBuilder(userAnswers = None)
         .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
