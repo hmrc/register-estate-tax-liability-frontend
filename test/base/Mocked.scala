@@ -17,14 +17,15 @@
 package base
 
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito
+import org.mockito.Mockito.when
 import repositories.SessionRepository
 
 import scala.concurrent.Future
 
-trait Mocked extends MockitoSugar {
+trait Mocked {
 
-  val sessionRepository: SessionRepository = mock[SessionRepository]
+  val sessionRepository: SessionRepository = Mockito.mock(classOf[SessionRepository])
 
   when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 

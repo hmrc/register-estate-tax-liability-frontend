@@ -21,7 +21,8 @@ import config.annotations.TaxLiability
 import models.NormalMode
 import navigation.Navigator
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.mockito.Mockito
 import pages.CYMinusThreeEarlierYearsYesNoPage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -33,7 +34,7 @@ import views.html.EarlierYearsToPayThanAskedYesNoView
 
 import scala.concurrent.Future
 
-class CYMinusThreeEarlierYearsLiabilityControllerSpec extends SpecBase with MockitoSugar {
+class CYMinusThreeEarlierYearsLiabilityControllerSpec extends SpecBase {
 
   override def onwardRoute = Call("GET", "/foo")
 
@@ -85,7 +86,7 @@ class CYMinusThreeEarlierYearsLiabilityControllerSpec extends SpecBase with Mock
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockPlaybackRepository = mock[SessionRepository]
+      val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
       when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 

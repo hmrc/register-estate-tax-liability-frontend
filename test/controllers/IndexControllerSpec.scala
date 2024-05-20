@@ -20,6 +20,8 @@ import base.SpecBase
 import connectors.EstatesConnector
 import models.NormalMode
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.{times, verify, when}
 import pages.DateOfDeathPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -53,7 +55,7 @@ class IndexControllerSpec extends SpecBase {
     "for an existing session" when {
 
       "continue session if date of death is not changed" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
@@ -82,7 +84,7 @@ class IndexControllerSpec extends SpecBase {
       }
 
       "clear user answers if the user returns and the date of death has changed" in {
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
@@ -117,7 +119,7 @@ class IndexControllerSpec extends SpecBase {
 
       "date of death is more than four years ago and current date is before 23rd Dec" in {
 
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val application = applicationBuilder(userAnswers = None)
@@ -146,7 +148,7 @@ class IndexControllerSpec extends SpecBase {
 
       "date of death is four years ago and current date is before 23rd Dec" in {
 
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -176,7 +178,7 @@ class IndexControllerSpec extends SpecBase {
 
       "date of death is more than three years ago and current date is after 23rd Dec" in {
 
-        val mockEstatesConnector = mock[EstatesConnector]
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
@@ -207,7 +209,7 @@ class IndexControllerSpec extends SpecBase {
       "date of death is three years ago" when {
         "current date is before 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -234,7 +236,7 @@ class IndexControllerSpec extends SpecBase {
 
         "current date is after 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
@@ -266,7 +268,7 @@ class IndexControllerSpec extends SpecBase {
       "date of death is two years ago" when {
         "current date is before 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -293,7 +295,7 @@ class IndexControllerSpec extends SpecBase {
 
         "current date is after 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 
@@ -325,7 +327,7 @@ class IndexControllerSpec extends SpecBase {
       "date of death is one years ago" when {
         "current date is before 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
 
@@ -352,7 +354,7 @@ class IndexControllerSpec extends SpecBase {
 
         "current date is after 23rd Dec" in {
 
-          val mockEstatesConnector = mock[EstatesConnector]
+          val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
           val dateAfterDec23rd = LocalDate.of(cyTaxYear.getYear, 12, 25)
 

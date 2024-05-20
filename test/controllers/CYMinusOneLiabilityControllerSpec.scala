@@ -22,7 +22,8 @@ import forms.YesNoFormProviderWithArguments
 import models.{CYMinus1TaxYear, NormalMode, TaxYearRange}
 import navigation.Navigator
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar
+import org.mockito.Mockito.when
+import org.mockito.Mockito
 import pages.CYMinusOneYesNoPage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -34,7 +35,7 @@ import views.html.CYMinusOneYesNoView
 
 import scala.concurrent.Future
 
-class CYMinusOneLiabilityControllerSpec extends SpecBase with MockitoSugar {
+class CYMinusOneLiabilityControllerSpec extends SpecBase {
 
   override def onwardRoute = Call("GET", "/foo")
 
@@ -96,7 +97,7 @@ class CYMinusOneLiabilityControllerSpec extends SpecBase with MockitoSugar {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockPlaybackRepository = mock[SessionRepository]
+      val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
       when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 

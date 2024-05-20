@@ -22,7 +22,8 @@ package controllers
  import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange}
  import navigation.Navigator
  import org.mockito.ArgumentMatchers.any
- import org.mockito.MockitoSugar
+ import org.mockito.Mockito.when
+ import org.mockito.Mockito
  import pages.DidDeclareTaxToHMRCYesNoPage
  import play.api.inject.bind
  import play.api.mvc.Call
@@ -34,7 +35,7 @@ package controllers
 
  import scala.concurrent.Future
 
-class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
+class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
 
   override def onwardRoute = Call("GET", "/foo")
 
@@ -97,7 +98,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
       "redirect to the next page when valid data is submitted" in {
 
-        val mockPlaybackRepository = mock[SessionRepository]
+        val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
         when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 
@@ -225,7 +226,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
       "redirect to the next page when valid data is submitted" in {
 
-        val mockPlaybackRepository = mock[SessionRepository]
+        val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
         when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 
@@ -353,7 +354,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
       "redirect to the next page when valid data is submitted" in {
 
-        val mockPlaybackRepository = mock[SessionRepository]
+        val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
         when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 
@@ -481,7 +482,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase with MockitoSugar {
 
       "redirect to the next page when valid data is submitted" in {
 
-        val mockPlaybackRepository = mock[SessionRepository]
+        val mockPlaybackRepository = Mockito.mock(classOf[SessionRepository])
 
         when(mockPlaybackRepository.set(any())) thenReturn Future.successful(true)
 

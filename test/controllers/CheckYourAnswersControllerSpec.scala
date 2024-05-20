@@ -19,6 +19,8 @@ package controllers
 import base.SpecBase
 import connectors.EstatesStoreConnector
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.when
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
@@ -67,8 +69,8 @@ class CheckYourAnswersControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockService = mock[TaxLiabilityService]
-      val mockEstatesStoreConnector = mock[EstatesStoreConnector]
+      val mockService = Mockito.mock(classOf[TaxLiabilityService])
+      val mockEstatesStoreConnector = Mockito.mock(classOf[EstatesStoreConnector])
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[TaxLiabilityService].toInstance(mockService))
