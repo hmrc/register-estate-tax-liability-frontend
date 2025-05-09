@@ -1,7 +1,7 @@
 import sbt.*
 
 object AppDependencies {
-  val bootstrapVersion = "8.6.0"
+  val bootstrapVersion = "9.11.0"
   val mongoVersion = "2.2.0"
 
   val compile: Seq[ModuleID] = Seq(

@@ -17,23 +17,23 @@
 package connectors
 
 import config.FrontendAppConfig
-import javax.inject.Inject
 import uk.gov.hmrc.http.HttpReads.Implicits
 import uk.gov.hmrc.http.HttpReads.Implicits.{readEitherOf, throwOnFailure}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOps}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstatesStoreConnector @Inject()(http: HttpClient, config: FrontendAppConfig) {
+class EstatesStoreConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
 
   implicit def httpResponse: HttpReads[HttpResponse] =
     throwOnFailure(readEitherOf[HttpResponse](Implicits.readRaw))
 
-  private def registerTasksUrl() = s"${config.estatesStoreUrl}/estates-store/register/tasks/tax-liability"
-
   def setTaskComplete()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-    http.POSTEmpty[HttpResponse](registerTasksUrl())
+  //  http.POSTEmpty[HttpResponse](registerTasksUrl())
+    val registerTasksUrl = s"${config.estatesStoreUrl}/estates-store/register/tasks/tax-liability"
+    http.post(url"$registerTasksUrl").execute[HttpResponse]
   }
 
 }
