@@ -3,7 +3,7 @@ import scoverage.ScoverageKeys
 
 lazy val appName: String = "register-estate-tax-liability-frontend"
 
-ThisBuild / scalaVersion := "2.13.14"
+ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / majorVersion := 0
 
 lazy val root = (project in file("."))
