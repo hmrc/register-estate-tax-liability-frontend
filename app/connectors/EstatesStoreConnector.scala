@@ -31,7 +31,6 @@ class EstatesStoreConnector @Inject()(http: HttpClientV2, config: FrontendAppCon
     throwOnFailure(readEitherOf[HttpResponse](Implicits.readRaw))
 
   def setTaskComplete()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
-  //  http.POSTEmpty[HttpResponse](registerTasksUrl())
     val registerTasksUrl = s"${config.estatesStoreUrl}/estates-store/register/tasks/tax-liability"
     http.post(url"$registerTasksUrl").execute[HttpResponse]
   }
