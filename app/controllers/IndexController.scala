@@ -16,11 +16,8 @@
 
 package controllers
 
-import java.time.LocalDate
-
 import controllers.actions.Actions
 import handlers.ErrorHandler
-import javax.inject.Inject
 import models.requests.OptionalDataRequest
 import models.{NormalMode, UserAnswers}
 import pages.DateOfDeathPage
@@ -33,6 +30,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.time.TaxYear
 import utils.Session
 
+import java.time.LocalDate
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class IndexController @Inject()(
@@ -74,19 +73,21 @@ class IndexController @Inject()(
   }
 
   private def redirect()(implicit request: OptionalDataRequest[AnyContent]) : Future[Result] = {
-    taxLiabilityService.getFirstYearOfTaxLiability().map { taxLiabilityYear =>
+    taxLiabilityService.getFirstYearOfTaxLiability().flatMap { taxLiabilityYear =>
       val currentYear = TaxYear.current.startYear
       val startYear = taxLiabilityYear.firstYearAvailable.startYear
 
       (currentYear - startYear) match {
-        case 4 if taxLiabilityYear.earlierYears => Redirect(controllers.routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode))
-        case 4 => Redirect(controllers.routes.CYMinusFourLiabilityController.onPageLoad(NormalMode))
-        case 3 if taxLiabilityYear.earlierYears => Redirect(controllers.routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode))
-        case 3 => Redirect(controllers.routes.CYMinusThreeLiabilityController.onPageLoad(NormalMode))
-        case 2 => Redirect(controllers.routes.CYMinusTwoLiabilityController.onPageLoad(NormalMode))
-        case 1 => Redirect(controllers.routes.CYMinusOneLiabilityController.onPageLoad(NormalMode))
-        case _ => InternalServerError(errorHandler.internalServerErrorTemplate)
+        case 4 if taxLiabilityYear.earlierYears => Future.successful(Redirect(controllers.routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode)))
+        case 4 => Future.successful(Redirect(controllers.routes.CYMinusFourLiabilityController.onPageLoad(NormalMode)))
+        case 3 if taxLiabilityYear.earlierYears => Future.successful(Redirect(controllers.routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode)))
+        case 3 => Future.successful(Redirect(controllers.routes.CYMinusThreeLiabilityController.onPageLoad(NormalMode)))
+        case 2 => Future.successful(Redirect(controllers.routes.CYMinusTwoLiabilityController.onPageLoad(NormalMode)))
+        case 1 => Future.successful(Redirect(controllers.routes.CYMinusOneLiabilityController.onPageLoad(NormalMode)))
+        case _ => errorHandler.internalServerErrorTemplate.map{html => InternalServerError(html)}
+
       }
     }
   }
+
 }
