@@ -57,7 +57,7 @@ class IndexControllerSpec extends SpecBase {
       "continue session if date of death is not changed" in {
         val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
-        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
+        val dateBeforeDec23rd  = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         val existingUserAnswers = emptyUserAnswers.set(DateOfDeathPage, initialDateOfDeath).success.value
@@ -76,7 +76,9 @@ class IndexControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url)
+        redirectLocation(result) mustBe Some(
+          routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
+        )
 
         verify(sessionRepository, times(0)).resetCache(any())
 
@@ -86,7 +88,7 @@ class IndexControllerSpec extends SpecBase {
       "clear user answers if the user returns and the date of death has changed" in {
         val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
-        val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
+        val dateBeforeDec23rd  = LocalDate.of(cyTaxYear.getYear, 5, 1)
         val initialDateOfDeath = LocalDate.of(cyMinus5TaxYear.getYear, 5, 1)
 
         val existingUserAnswers = emptyUserAnswers.set(DateOfDeathPage, initialDateOfDeath).success.value
@@ -122,7 +124,7 @@ class IndexControllerSpec extends SpecBase {
         val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
         val dateBeforeDec23rd = LocalDate.of(cyTaxYear.getYear, 5, 1)
-        val application = applicationBuilder(userAnswers = None)
+        val application       = applicationBuilder(userAnswers = None)
           .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
           .overrides(bind[LocalDateService].toInstance(setCurrentDate(dateBeforeDec23rd)))
           .build()
@@ -138,7 +140,9 @@ class IndexControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url)
+        redirectLocation(result) mustBe Some(
+          routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
+        )
 
         application.stop()
       }
@@ -198,7 +202,9 @@ class IndexControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result) mustBe Some(routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode).url)
+        redirectLocation(result) mustBe Some(
+          routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode).url
+        )
 
         application.stop()
       }
@@ -381,4 +387,5 @@ class IndexControllerSpec extends SpecBase {
       }
     }
   }
+
 }

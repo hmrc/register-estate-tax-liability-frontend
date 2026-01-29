@@ -21,7 +21,7 @@ import uk.gov.hmrc.play.language.LanguageUtils
 
 import javax.inject.Inject
 
-class TaxYearRange @Inject()(languageUtils: LanguageUtils) {
+class TaxYearRange @Inject() (languageUtils: LanguageUtils) {
 
   private def taxYearYear(taxYear: TaxYear) = uk.gov.hmrc.time.TaxYear.current.back(taxYear.year)
 
@@ -33,7 +33,7 @@ class TaxYearRange @Inject()(languageUtils: LanguageUtils) {
 
   def yearAtStart(taxYear: TaxYear): String = taxYearYear(taxYear).startYear.toString
 
-  def toRange(taxYear: TaxYear)(implicit messages: Messages): String = {
+  def toRange(taxYear: TaxYear)(implicit messages: Messages): String =
     messages("taxYearToRange", startYear(taxYear), endYear(taxYear))
-  }
+
 }

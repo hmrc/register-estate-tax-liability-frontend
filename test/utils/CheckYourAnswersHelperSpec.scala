@@ -27,7 +27,7 @@ import viewmodels.{AnswerRow, AnswerSection}
 class CheckYourAnswersHelperSpec extends SpecBase {
 
   val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
-  val taxYearRange: TaxYearRange = new TaxYearRange(languageUtils)
+  val taxYearRange: TaxYearRange   = new TaxYearRange(languageUtils)
 
   val cYMinus4StartYear: String = taxYearRange.yearAtStart(CYMinus4TaxYear)
   val cYMinus3StartYear: String = taxYearRange.yearAtStart(CYMinus3TaxYear)
@@ -40,14 +40,18 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusFourEarlierYearsYesNoPage, true).success.value
+          .set(CYMinusFourEarlierYearsYesNoPage, true)
+          .success
+          .value
 
         val result = cyaHelper.earlierThan4YearsAnswers(userAnswers)
 
         result.value mustBe AnswerSection(
           heading = Some(Html(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", cYMinus4StartYear))),
           rows = Seq(
-            AnswerRow(label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus4StartYear), answer = Html("Yes"),
+            AnswerRow(
+              label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus4StartYear),
+              answer = Html("Yes"),
               changeUrl = routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
             )
           )
@@ -58,14 +62,18 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusThreeEarlierYearsYesNoPage, true).success.value
+          .set(CYMinusThreeEarlierYearsYesNoPage, true)
+          .success
+          .value
 
         val result = cyaHelper.earlierThan3YearsAnswers(userAnswers)
 
         result.value mustBe AnswerSection(
           heading = Some(Html(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", cYMinus3StartYear))),
           rows = Seq(
-            AnswerRow(label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus3StartYear), answer = Html("Yes"),
+            AnswerRow(
+              label = messages("earlierYearsLiabilityYesNo.checkYourAnswersLabel", cYMinus3StartYear),
+              answer = Html("Yes"),
               changeUrl = routes.CYMinusThreeEarlierYearsLiabilityController.onPageLoad(NormalMode).url
             )
           )
@@ -79,12 +87,16 @@ class CheckYourAnswersHelperSpec extends SpecBase {
       "render answers for CY-4 liability and declared" in {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
-        val taxYear = CYMinus4TaxYear
+        val taxYear                     = CYMinus4TaxYear
         val taxYearRangeDisplay: String = taxYearRange.toRange(taxYear)
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusFourYesNoPage, true).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true).success.value
+          .set(CYMinusFourYesNoPage, true)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true)
+          .success
+          .value
 
         val result = cyaHelper.cyMinusTaxYearAnswers(userAnswers, taxYear)
 
@@ -111,12 +123,16 @@ class CheckYourAnswersHelperSpec extends SpecBase {
       "render answers for CY-3 liability and declared" in {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
-        val taxYear = CYMinus3TaxYear
+        val taxYear                     = CYMinus3TaxYear
         val taxYearRangeDisplay: String = taxYearRange.toRange(taxYear)
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusThreeYesNoPage, true).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true).success.value
+          .set(CYMinusThreeYesNoPage, true)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true)
+          .success
+          .value
 
         val result = cyaHelper.cyMinusTaxYearAnswers(userAnswers, taxYear)
 
@@ -143,12 +159,16 @@ class CheckYourAnswersHelperSpec extends SpecBase {
       "render answers for CY-2 liability and declared" in {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
-        val taxYear = CYMinus2TaxYear
+        val taxYear                     = CYMinus2TaxYear
         val taxYearRangeDisplay: String = taxYearRange.toRange(taxYear)
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusTwoYesNoPage, true).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true).success.value
+          .set(CYMinusTwoYesNoPage, true)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true)
+          .success
+          .value
 
         val result = cyaHelper.cyMinusTaxYearAnswers(userAnswers, taxYear)
 
@@ -175,12 +195,16 @@ class CheckYourAnswersHelperSpec extends SpecBase {
       "render answers for CY-1 liability and declared" in {
         val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
 
-        val taxYear = CYMinus1TaxYear
+        val taxYear                     = CYMinus1TaxYear
         val taxYearRangeDisplay: String = taxYearRange.toRange(taxYear)
 
         val userAnswers = emptyUserAnswers
-          .set(CYMinusOneYesNoPage, true).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true).success.value
+          .set(CYMinusOneYesNoPage, true)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(taxYear), true)
+          .success
+          .value
 
         val result = cyaHelper.cyMinusTaxYearAnswers(userAnswers, taxYear)
 

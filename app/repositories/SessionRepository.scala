@@ -31,49 +31,51 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Singleton
 
 @Singleton
-class DefaultSessionRepository @Inject()(
-                                          val mongoComponent: MongoComponent,
-                                          val config: FrontendAppConfig
-                                        )(implicit val ec: ExecutionContext)
-  extends PlayMongoRepository[UserAnswers](
-    collectionName = "user-answers",
-    mongoComponent = mongoComponent,
-    domainFormat = Format(UserAnswers.reads,UserAnswers.writes),
-    indexes = Seq(
-      IndexModel(
-        ascending("lastUpdated"),
-        IndexOptions()
-          .unique(false)
-          .name("user-answers-last-updated-index")
-          .expireAfter(config.cachettl, TimeUnit.SECONDS)
-      )
-    ), replaceIndexes = config.dropIndexes
-
-  )  with SessionRepository {
+class DefaultSessionRepository @Inject() (
+  val mongoComponent: MongoComponent,
+  val config: FrontendAppConfig
+)(implicit val ec: ExecutionContext)
+    extends PlayMongoRepository[UserAnswers](
+      collectionName = "user-answers",
+      mongoComponent = mongoComponent,
+      domainFormat = Format(UserAnswers.reads, UserAnswers.writes),
+      indexes = Seq(
+        IndexModel(
+          ascending("lastUpdated"),
+          IndexOptions()
+            .unique(false)
+            .name("user-answers-last-updated-index")
+            .expireAfter(config.cachettl, TimeUnit.SECONDS)
+        )
+      ),
+      replaceIndexes = config.dropIndexes
+    )
+    with SessionRepository {
 
   override def get(id: String): Future[Option[UserAnswers]] = {
-    val selector = equal("_id", id)
-    val modifier = Updates.set("updatedAt", LocalDateTime.now())
+    val selector     = equal("_id", id)
+    val modifier     = Updates.set("updatedAt", LocalDateTime.now())
     val updateOption = new FindOneAndUpdateOptions().upsert(false)
 
     collection.findOneAndUpdate(selector, modifier, updateOption).toFutureOption()
   }
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
-    val selector = equal("_id" , userAnswers.id)
+    val selector = equal("_id", userAnswers.id)
     val modifier = userAnswers.copy(lastUpdated = LocalDateTime.now)
-    val options = ReplaceOptions().upsert(true)
+    val options  = ReplaceOptions().upsert(true)
 
-    collection.replaceOne(selector,modifier,options).headOption().map(_.exists(_.wasAcknowledged()))
+    collection.replaceOne(selector, modifier, options).headOption().map(_.exists(_.wasAcknowledged()))
 
   }
 
   override def resetCache(id: String): Future[Option[Boolean]] = {
-    val selector = equal("_id" , id)
+    val selector = equal("_id", id)
 
     collection.deleteOne(selector).headOption().map(_.map(_.wasAcknowledged()))
 
   }
+
 }
 
 trait SessionRepository {

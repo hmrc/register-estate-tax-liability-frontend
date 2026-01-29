@@ -25,12 +25,12 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOp
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstatesStoreConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
+class EstatesStoreConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig) {
 
   implicit def httpResponse: HttpReads[HttpResponse] =
     throwOnFailure(readEitherOf[HttpResponse](Implicits.readRaw))
 
-  def setTaskComplete()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+  def setTaskComplete()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
     val registerTasksUrl = s"${config.estatesStoreUrl}/estates-store/register/tasks/tax-liability"
     http.post(url"$registerTasksUrl").execute[HttpResponse]
   }

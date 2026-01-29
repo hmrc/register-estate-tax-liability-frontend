@@ -27,7 +27,6 @@ import uk.gov.hmrc.play.audit.http.connector.AuditConnector
 
 class LogoutControllerSpec extends SpecBase {
 
-
   "LogoutController" when {
 
     "auditing enabled" must {

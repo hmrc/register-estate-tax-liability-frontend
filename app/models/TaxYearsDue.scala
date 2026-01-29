@@ -18,16 +18,17 @@ package models
 
 import java.time.LocalDate
 
-case class TaxYearsDue(cyMinus4Due: Boolean, cyMinus3Due: Boolean, cyMinus2Due: Boolean, cyMinus1Due: Boolean)
-                      (today: LocalDate) {
+case class TaxYearsDue(cyMinus4Due: Boolean, cyMinus3Due: Boolean, cyMinus2Due: Boolean, cyMinus1Due: Boolean)(
+  today: LocalDate
+) {
 
   private val OCTOBER_MONTH = 10
-  private val OCTOBER_DAY = 5
+  private val OCTOBER_DAY   = 5
 
   private val octoberDeadline =
     LocalDate.of(uk.gov.hmrc.time.TaxYear.current.starts.getYear, OCTOBER_MONTH, OCTOBER_DAY)
 
-  def toList : List[YearReturnType] = {
+  def toList: List[YearReturnType] = {
     val yearsBeforeCYMinus1 = List(
       YearReturnType(taxReturnYear = CYMinus4TaxYear.asShortFinishYear(), taxConsequence = cyMinus4Due),
       YearReturnType(taxReturnYear = CYMinus3TaxYear.asShortFinishYear(), taxConsequence = cyMinus3Due),
@@ -36,7 +37,7 @@ case class TaxYearsDue(cyMinus4Due: Boolean, cyMinus3Due: Boolean, cyMinus2Due: 
 
     if (cyMinus1Due) {
 
-      lazy val evaluateCYMinus1 : Boolean = if(today.isAfter(octoberDeadline)) {
+      lazy val evaluateCYMinus1: Boolean = if (today.isAfter(octoberDeadline)) {
         cyMinus1Due
       } else {
         !cyMinus1Due

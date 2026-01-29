@@ -24,7 +24,7 @@ import views.html.EarlierYearsToPayThanAskedYesNoView
 class EarlierYearsToPayThanAskedYesNoViewSpec extends ViewBehaviours {
 
   val messageKeyPrefix = "earlierYearsLiabilityYesNo"
-  val taxYear = "2000"
+  val taxYear          = "2000"
 
   lazy val submitRoute = controllers.routes.CYMinusThreeEarlierYearsLiabilityController.onSubmit(NormalMode)
 
@@ -41,4 +41,5 @@ class EarlierYearsToPayThanAskedYesNoViewSpec extends ViewBehaviours {
 
     behave like pageWithASubmitButton(applyView())
   }
+
 }

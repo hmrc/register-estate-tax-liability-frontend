@@ -29,10 +29,7 @@ import utils.WireMockHelper
 
 import scala.concurrent.ExecutionContext
 
-class EstatesConnectorSpec extends SpecBase
-  with ScalaFutures
-  with IntegrationPatience
-  with WireMockHelper {
+class EstatesConnectorSpec extends SpecBase with ScalaFutures with IntegrationPatience with WireMockHelper {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -43,16 +40,16 @@ class EstatesConnectorSpec extends SpecBase
         .configure(
           Seq(
             "microservice.services.estates.port" -> server.port(),
-            "auditing.enabled" -> false
+            "auditing.enabled"                   -> false
           ): _*
-        ).build()
+        )
+        .build()
 
       implicit def ec: ExecutionContext = application.injector.instanceOf[ExecutionContext]
 
       val connector = application.injector.instanceOf[EstatesConnector]
 
-      val json = Json.parse(
-        """
+      val json = Json.parse("""
           |"2010-10-10"
           |""".stripMargin)
 
@@ -63,9 +60,8 @@ class EstatesConnectorSpec extends SpecBase
 
       val futureResult = connector.getDateOfDeath()
 
-      whenReady(futureResult) {
-        r =>
-          r mustBe LocalDate.of(2010,10,10)
+      whenReady(futureResult) { r =>
+        r mustBe LocalDate.of(2010, 10, 10)
       }
 
       application.stop()
@@ -76,9 +72,10 @@ class EstatesConnectorSpec extends SpecBase
         .configure(
           Seq(
             "microservice.services.estates.port" -> server.port(),
-            "auditing.enabled" -> false
+            "auditing.enabled"                   -> false
           ): _*
-        ).build()
+        )
+        .build()
 
       implicit def ec: ExecutionContext = application.injector.instanceOf[ExecutionContext]
 
@@ -86,8 +83,7 @@ class EstatesConnectorSpec extends SpecBase
 
       server.stubFor(
         post(urlEqualTo("/estates/tax-liability"))
-          .withRequestBody(equalTo(
-            Json.stringify(Json.parse("""
+          .withRequestBody(equalTo(Json.stringify(Json.parse("""
               |{
               | "returns": [
               |   {"taxReturnYear":"20", "taxConsequence": true}
@@ -99,9 +95,8 @@ class EstatesConnectorSpec extends SpecBase
 
       val futureResult = connector.saveTaxConsequence(YearsReturns(List(YearReturnType("20", true))))
 
-      whenReady(futureResult) {
-        r =>
-          r.status mustBe OK
+      whenReady(futureResult) { r =>
+        r.status mustBe OK
       }
 
       application.stop()
@@ -112,9 +107,10 @@ class EstatesConnectorSpec extends SpecBase
         .configure(
           Seq(
             "microservice.services.estates.port" -> server.port(),
-            "auditing.enabled" -> false
+            "auditing.enabled"                   -> false
           ): _*
-        ).build()
+        )
+        .build()
 
       implicit def ec: ExecutionContext = application.injector.instanceOf[ExecutionContext]
 
@@ -127,9 +123,8 @@ class EstatesConnectorSpec extends SpecBase
 
       val futureResult = connector.resetTaxLiability()
 
-      whenReady(futureResult) {
-        r =>
-          r.status mustBe OK
+      whenReady(futureResult) { r =>
+        r.status mustBe OK
       }
 
       application.stop()

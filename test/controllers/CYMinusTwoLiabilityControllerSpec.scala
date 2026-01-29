@@ -44,8 +44,8 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase {
   def form(arguments: Seq[Any]) = formProvider.withPrefix("cyMinusTwoYesNo.liability", arguments)
 
   val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
-  val taxYearStart: String = new TaxYearRange(languageUtils).startYear(CYMinus2TaxYear)
-  val taxYearEnd: String = new TaxYearRange(languageUtils).endYear(CYMinus2TaxYear)
+  val taxYearStart: String         = new TaxYearRange(languageUtils).startYear(CYMinus2TaxYear)
+  val taxYearEnd: String           = new TaxYearRange(languageUtils).endYear(CYMinus2TaxYear)
 
   val taxYear: String = s"$taxYearStart to $taxYearEnd"
 
@@ -175,4 +175,5 @@ class CYMinusTwoLiabilityControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }

@@ -35,4 +35,5 @@ class Module extends AbstractModule {
     bind(classOf[SessionRepository]).to(classOf[DefaultSessionRepository]).asEagerSingleton()
     bind(classOf[Navigator]).annotatedWith(classOf[TaxLiability]).to(classOf[TaxLiabilityNavigator]).asEagerSingleton()
   }
+
 }

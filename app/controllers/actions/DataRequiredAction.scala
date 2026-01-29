@@ -27,20 +27,22 @@ import utils.Session
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DataRequiredActionImpl @Inject()(implicit val executionContext: ExecutionContext) extends DataRequiredAction with Logging {
+class DataRequiredActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends DataRequiredAction with Logging {
 
   override protected def refine[A](request: OptionalDataRequest[A]): Future[Either[Result, DataRequest[A]]] = {
 
     implicit val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     request.userAnswers match {
-      case None =>
+      case None       =>
         logger.error(s"[Session ID: ${Session.id(hc)}] UserAnswers not found in request")
         Future.successful(Left(Redirect(routes.SessionExpiredController.onPageLoad)))
       case Some(data) =>
         Future.successful(Right(DataRequest(request.request, request.internalId, data)))
     }
   }
+
 }
 
 trait DataRequiredAction extends ActionRefiner[OptionalDataRequest, DataRequest]

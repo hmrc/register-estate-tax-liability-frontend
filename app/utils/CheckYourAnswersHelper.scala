@@ -17,20 +17,22 @@
 package utils
 
 import com.google.inject.Inject
-import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange, UserAnswers}
+import models.{
+  CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange, UserAnswers
+}
 import pages._
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import viewmodels.{AnswerRow, AnswerSection}
 
-class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, taxYearRange: TaxYearRange) {
+class CheckYourAnswersHelper @Inject() (answerRowConverter: AnswerRowConverter, taxYearRange: TaxYearRange) {
 
-  def earlierThan4YearsAnswers(userAnswers: UserAnswers)(implicit messages: Messages) : Option[AnswerSection] = {
+  def earlierThan4YearsAnswers(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerSection] = {
     val bound = answerRowConverter.bind(userAnswers)
 
     val date = taxYearRange.yearAtStart(CYMinus4TaxYear)
 
-    val answerRows : Seq[AnswerRow] = Seq(
+    val answerRows: Seq[AnswerRow] = Seq(
       bound.yesNoQuestion(
         CYMinusFourEarlierYearsYesNoPage,
         "earlierYearsLiabilityYesNo",
@@ -41,7 +43,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
 
     answerRows match {
       case Nil => None
-      case _ =>
+      case _   =>
         Some(
           AnswerSection(
             Some(HtmlFormat.escape(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", date))),
@@ -51,12 +53,12 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
     }
   }
 
-  def earlierThan3YearsAnswers(userAnswers: UserAnswers)(implicit messages: Messages) : Option[AnswerSection] = {
+  def earlierThan3YearsAnswers(userAnswers: UserAnswers)(implicit messages: Messages): Option[AnswerSection] = {
     val bound = answerRowConverter.bind(userAnswers)
 
     val date = taxYearRange.yearAtStart(CYMinus3TaxYear)
 
-    val answerRows : Seq[AnswerRow] = Seq(
+    val answerRows: Seq[AnswerRow] = Seq(
       bound.yesNoQuestion(
         CYMinusThreeEarlierYearsYesNoPage,
         "earlierYearsLiabilityYesNo",
@@ -67,7 +69,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
 
     answerRows match {
       case Nil => None
-      case _ =>
+      case _   =>
         Some(
           AnswerSection(
             Some(HtmlFormat.escape(messages("earlierYearsLiabilityYesNo.checkYourAnswerSectionHeading", date))),
@@ -77,15 +79,16 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
     }
   }
 
-  def cyMinusTaxYearAnswers(userAnswers: UserAnswers, taxYear: TaxYear)
-                           (implicit messages: Messages): Option[AnswerSection] = {
+  def cyMinusTaxYearAnswers(userAnswers: UserAnswers, taxYear: TaxYear)(implicit
+    messages: Messages
+  ): Option[AnswerSection] = {
     val bound = answerRowConverter.bind(userAnswers)
 
-    val toRange = taxYearRange.toRange(taxYear)
-    val page = yesNoPageForTaxYear(taxYear)
+    val toRange     = taxYearRange.toRange(taxYear)
+    val page        = yesNoPageForTaxYear(taxYear)
     val changeRoute = changeRouteForTaxYear(taxYear)
 
-    val answerRows : Seq[AnswerRow] = Seq(
+    val answerRows: Seq[AnswerRow] = Seq(
       bound.yesNoQuestion(
         page,
         s"${taxYear.messagePrefix}.liability",
@@ -102,7 +105,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
 
     answerRows match {
       case Nil => None
-      case _ =>
+      case _   =>
         Some(
           AnswerSection(
             Some(HtmlFormat.escape(messages("taxLiabilityBetweenYears.checkYourAnswerSectionHeading", toRange))),
@@ -119,7 +122,7 @@ class CheckYourAnswersHelper @Inject()(answerRowConverter: AnswerRowConverter, t
     case CYMinus1TaxYear => controllers.routes.CYMinusOneLiabilityController.onPageLoad(NormalMode).url
   }
 
-  private def yesNoPageForTaxYear(taxYear: TaxYear) : QuestionPage[Boolean] = taxYear match {
+  private def yesNoPageForTaxYear(taxYear: TaxYear): QuestionPage[Boolean] = taxYear match {
     case CYMinus4TaxYear => CYMinusFourYesNoPage
     case CYMinus3TaxYear => CYMinusThreeYesNoPage
     case CYMinus2TaxYear => CYMinusTwoYesNoPage

@@ -29,27 +29,26 @@ import views.html.EarlierYearsToPayThanAskedYesNoView
 
 import scala.concurrent.Future
 
-class CYMinusThreeEarlierYearsLiabilityController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 @TaxLiability navigator: Navigator,
-                                 actions: Actions,
-                                 view: EarlierYearsToPayThanAskedYesNoView,
-                                 taxYearRange: TaxYearRange
-                               ) extends FrontendBaseController with I18nSupport {
+class CYMinusThreeEarlierYearsLiabilityController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  @TaxLiability navigator: Navigator,
+  actions: Actions,
+  view: EarlierYearsToPayThanAskedYesNoView,
+  taxYearRange: TaxYearRange
+) extends FrontendBaseController with I18nSupport {
 
-  private val workingTaxYear = CYMinus3TaxYear
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
-    implicit request =>
+  private val workingTaxYear                     = CYMinus3TaxYear
 
-      val start = taxYearRange.yearAtStart(workingTaxYear)
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData { implicit request =>
+    val start = taxYearRange.yearAtStart(workingTaxYear)
 
-      val continueUrl = routes.CYMinusThreeEarlierYearsLiabilityController.onSubmit(mode)
+    val continueUrl = routes.CYMinusThreeEarlierYearsLiabilityController.onSubmit(mode)
 
-      Ok(view(start, mode, continueUrl))
+    Ok(view(start, mode, continueUrl))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-      Future.successful(Redirect(navigator.nextPage(CYMinusThreeEarlierYearsYesNoPage, mode, request.userAnswers)))
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    Future.successful(Redirect(navigator.nextPage(CYMinusThreeEarlierYearsYesNoPage, mode, request.userAnswers)))
   }
+
 }

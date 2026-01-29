@@ -40,7 +40,8 @@ class CYMinusFourEarlierYearsLiabilityControllerSpec extends SpecBase {
 
   val taxYear: String = TaxYear.current.back(4).startYear.toString
 
-  lazy val cyMinusFourEarlierYearsLiabilityControllerRoute = routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
+  lazy val cyMinusFourEarlierYearsLiabilityControllerRoute =
+    routes.CYMinusFourEarlierYearsLiabilityController.onPageLoad(NormalMode).url
 
   lazy val submitRoute = routes.CYMinusFourEarlierYearsLiabilityController.onSubmit(NormalMode)
 
@@ -139,4 +140,5 @@ class CYMinusFourEarlierYearsLiabilityControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }
