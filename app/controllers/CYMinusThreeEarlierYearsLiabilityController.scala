@@ -37,7 +37,7 @@ class CYMinusThreeEarlierYearsLiabilityController @Inject() (
   taxYearRange: TaxYearRange
 ) extends FrontendBaseController with I18nSupport {
 
-  private val workingTaxYear                     = CYMinus3TaxYear
+  private val workingTaxYear = CYMinus3TaxYear
 
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData { implicit request =>
     val start = taxYearRange.yearAtStart(workingTaxYear)

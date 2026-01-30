@@ -44,7 +44,7 @@ class CYMinusFourLiabilityController @Inject() (
 
   def form(ranges: Seq[String]) = formProvider.withPrefix("cyMinusFourYesNo.liability", ranges)
 
-  private val workingTaxYear                     = CYMinus4TaxYear
+  private val workingTaxYear = CYMinus4TaxYear
 
   def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData { implicit request =>
     val f = form(Seq(taxYearRange.startYear(workingTaxYear), taxYearRange.endYear(workingTaxYear)))
