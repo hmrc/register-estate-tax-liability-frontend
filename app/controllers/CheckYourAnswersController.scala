@@ -31,44 +31,45 @@ import views.html.CheckYourAnswersView
 
 import scala.concurrent.ExecutionContext
 
-class CheckYourAnswersController @Inject()(
-                                            override val messagesApi: MessagesApi,
-                                            val controllerComponents: MessagesControllerComponents,
-                                            view: CheckYourAnswersView,
-                                            checkYourAnswersHelper: CheckYourAnswersHelper,
-                                            actions: Actions,
-                                            estatesService: TaxLiabilityService,
-                                            estatesStoreConnector: EstatesStoreConnector,
-                                            val appConfig : FrontendAppConfig
-                                          )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with Logging {
+class CheckYourAnswersController @Inject() (
+  override val messagesApi: MessagesApi,
+  val controllerComponents: MessagesControllerComponents,
+  view: CheckYourAnswersView,
+  checkYourAnswersHelper: CheckYourAnswersHelper,
+  actions: Actions,
+  estatesService: TaxLiabilityService,
+  estatesStoreConnector: EstatesStoreConnector,
+  val appConfig: FrontendAppConfig
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport with Logging {
 
-  def onPageLoad(): Action[AnyContent] = actions.authWithData {
-    implicit request =>
-      val taxFor4Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus4TaxYear)
-      val taxFor3Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus3TaxYear)
-      val taxFor2Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus2TaxYear)
-      val taxFor1Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus1TaxYear)
+  def onPageLoad(): Action[AnyContent] = actions.authWithData { implicit request =>
+    val taxFor4Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus4TaxYear)
+    val taxFor3Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus3TaxYear)
+    val taxFor2Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus2TaxYear)
+    val taxFor1Years = checkYourAnswersHelper.cyMinusTaxYearAnswers(request.userAnswers, CYMinus1TaxYear)
 
-      val sections = Seq(
-        taxFor4Years,
-        taxFor3Years,
-        taxFor2Years,
-        taxFor1Years
-      ).flatten
+    val sections = Seq(
+      taxFor4Years,
+      taxFor3Years,
+      taxFor2Years,
+      taxFor1Years
+    ).flatten
 
-      Ok(view(sections))
+    Ok(view(sections))
   }
 
-  def onSubmit(): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-
-      for {
-        _ <- estatesService.submitTaxLiability(request.userAnswers)
-        _ <- estatesStoreConnector.setTaskComplete()
-      } yield {
-        logger.info(s"[Session ID: ${Session.id(hc)}]" +
-          s" user has finished registering tax liability and is returning to the task list")
-        Redirect(appConfig.registerEstateHubOverview)
-      }
+  def onSubmit(): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    for {
+      _ <- estatesService.submitTaxLiability(request.userAnswers)
+      _ <- estatesStoreConnector.setTaskComplete()
+    } yield {
+      logger.info(
+        s"[Session ID: ${Session.id(hc)}]" +
+          s" user has finished registering tax liability and is returning to the task list"
+      )
+      Redirect(appConfig.registerEstateHubOverview)
+    }
   }
+
 }

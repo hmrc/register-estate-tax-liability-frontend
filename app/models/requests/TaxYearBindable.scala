@@ -22,12 +22,11 @@ import play.api.mvc.PathBindable
 object TaxYearBindable {
 
   implicit def pathBindable(implicit intBinder: PathBindable[Int]): PathBindable[TaxYear] = new PathBindable[TaxYear] {
-    override def bind(key: String, value: String): Either[String, TaxYear] = {
+    override def bind(key: String, value: String): Either[String, TaxYear] =
       for {
-        id <- intBinder.bind(key, value)
+        id      <- intBinder.bind(key, value)
         taxYear <- TaxYear.from(id).toRight("Not a valid tax year")
       } yield taxYear
-    }
 
     override def unbind(key: String, value: TaxYear): String = value.toString.trim.toLowerCase
   }

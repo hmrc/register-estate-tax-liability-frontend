@@ -42,7 +42,7 @@ class DataRetrievalActionSpec extends SpecBase with ScalaFutures {
 
         val sessionRepository = Mockito.mock(classOf[SessionRepository])
         when(sessionRepository.get("id")) thenReturn Future(None)
-        val action = new Harness(sessionRepository)
+        val action            = new Harness(sessionRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation))
 
@@ -58,7 +58,7 @@ class DataRetrievalActionSpec extends SpecBase with ScalaFutures {
 
         val sessionRepository = Mockito.mock(classOf[SessionRepository])
         when(sessionRepository.get("id")) thenReturn Future(Some(new UserAnswers("id")))
-        val action = new Harness(sessionRepository)
+        val action            = new Harness(sessionRepository)
 
         val futureResult = action.callTransform(new IdentifierRequest(fakeRequest, "id", AffinityGroup.Organisation))
 
@@ -68,4 +68,5 @@ class DataRetrievalActionSpec extends SpecBase with ScalaFutures {
       }
     }
   }
+
 }

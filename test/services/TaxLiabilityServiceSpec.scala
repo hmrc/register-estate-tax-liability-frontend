@@ -285,21 +285,21 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "date of death is between Jan 1st and April 5th (inclusive)" in {
 
-      val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
+        val mockEstatesConnector = Mockito.mock(classOf[EstatesConnector])
 
-      val application = applicationBuilder(userAnswers = None)
-        .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
-        .build()
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(bind[EstatesConnector].toInstance(mockEstatesConnector))
+          .build()
 
-      val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 1, 1)
+        val dateOfDeath = LocalDate.of(cyMinus2TaxYear.getYear, 1, 1)
 
-      when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
+        when(mockEstatesConnector.getDateOfDeath()(any(), any())).thenReturn(Future.successful(dateOfDeath))
 
-      val service = application.injector.instanceOf[TaxLiabilityService]
+        val service = application.injector.instanceOf[TaxLiabilityService]
 
-      val result = service.getTaxYearOfDeath()
+        val result = service.getTaxYearOfDeath()
 
-      result.futureValue mustEqual TaxYear(cyMinus3TaxYear.getYear)
+        result.futureValue mustEqual TaxYear(cyMinus3TaxYear.getYear)
       }
 
       "date of death is between April 6th and Dec 31st (inclusive)" in {
@@ -341,10 +341,18 @@ class TaxLiabilityServiceSpec extends SpecBase {
       val service = application.injector.instanceOf[TaxLiabilityService]
 
       val userAnswers = emptyUserAnswers
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+        .success
+        .value
 
       val result = service.submitTaxLiability(userAnswers)
 
@@ -364,10 +372,18 @@ class TaxLiabilityServiceSpec extends SpecBase {
       val service = application.injector.instanceOf[TaxLiabilityService]
 
       val userAnswers = emptyUserAnswers
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), true).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), true).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), true).success.value
-        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), true).success.value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), true)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), true)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), true)
+        .success
+        .value
+        .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), true)
+        .success
+        .value
 
       val result = service.submitTaxLiability(userAnswers)
 
@@ -381,10 +397,18 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 4 tax consequences" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
@@ -406,10 +430,18 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "when CY-1 is late (after 5 October)" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 10, 6)
 
@@ -435,10 +467,18 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 3 tax consequences where liable" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), true).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear), true)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
@@ -463,8 +503,12 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 2 tax consequences" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
@@ -488,8 +532,12 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 2 tax consequences" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false).success.value
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear), false)
+          .success
+          .value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 5, 5)
 
@@ -517,7 +565,9 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 1 tax consequence (false)" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 10, 6)
 
@@ -540,7 +590,9 @@ class TaxLiabilityServiceSpec extends SpecBase {
 
       "generate a list with 1 tax consequence (true)" in {
         val userAnswers = emptyUserAnswers
-          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false).success.value
+          .set(DidDeclareTaxToHMRCYesNoPage(CYMinus1TaxYear), false)
+          .success
+          .value
 
         val today = LocalDate.of(cyTaxYear.getYear, 10, 5)
 

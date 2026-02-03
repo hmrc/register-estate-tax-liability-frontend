@@ -31,43 +31,41 @@ import views.html.DidDeclareTaxToHMRCYesNoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class DidDeclareTaxToHMRCController @Inject()(
-                                               val controllerComponents: MessagesControllerComponents,
-                                               @TaxLiability navigator: Navigator,
-                                               actions: Actions,
-                                               formProvider: YesNoFormProviderWithArguments,
-                                               sessionRepository: SessionRepository,
-                                               view: DidDeclareTaxToHMRCYesNoView,
-                                               taxYearRange: TaxYearRange
-                                             )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class DidDeclareTaxToHMRCController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  @TaxLiability navigator: Navigator,
+  actions: Actions,
+  formProvider: YesNoFormProviderWithArguments,
+  sessionRepository: SessionRepository,
+  view: DidDeclareTaxToHMRCYesNoView,
+  taxYearRange: TaxYearRange
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController with I18nSupport {
 
   def form(ranges: Seq[String]) = formProvider.withPrefix("didDeclareToHMRCYesNo", ranges)
 
-  def onPageLoad(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData {
-    implicit request =>
+  def onPageLoad(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData { implicit request =>
+    val f = form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear)))
 
-      val f = form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear)))
+    val preparedForm = request.userAnswers.get(DidDeclareTaxToHMRCYesNoPage(taxYear)) match {
+      case None        => f
+      case Some(value) => f.fill(value)
+    }
 
-      val preparedForm = request.userAnswers.get(DidDeclareTaxToHMRCYesNoPage(taxYear)) match {
-        case None => f
-        case Some(value) => f.fill(value)
-      }
-
-      Ok(view(preparedForm, taxYear, taxYearRange.toRange(taxYear), mode))
+    Ok(view(preparedForm, taxYear, taxYearRange.toRange(taxYear), mode))
   }
 
-  def onSubmit(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-
-      form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear))).bindFromRequest().fold(
-        formWithErrors => {
-          Future.successful(BadRequest(view(formWithErrors, taxYear, taxYearRange.toRange(taxYear), mode)))
-        },
+  def onSubmit(mode: Mode, taxYear: TaxYear): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    form(Seq(taxYearRange.startYear(taxYear), taxYearRange.endYear(taxYear)))
+      .bindFromRequest()
+      .fold(
+        formWithErrors =>
+          Future.successful(BadRequest(view(formWithErrors, taxYear, taxYearRange.toRange(taxYear), mode))),
         value => {
           val page = DidDeclareTaxToHMRCYesNoPage(taxYear)
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(page, value))
-            _ <- sessionRepository.set(updatedAnswers)
+            _              <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(page, mode, updatedAnswers))
         }
       )

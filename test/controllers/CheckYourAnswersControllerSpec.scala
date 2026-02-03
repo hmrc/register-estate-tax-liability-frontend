@@ -69,7 +69,7 @@ class CheckYourAnswersControllerSpec extends SpecBase {
 
     "redirect to the next page when valid data is submitted" in {
 
-      val mockService = Mockito.mock(classOf[TaxLiabilityService])
+      val mockService               = Mockito.mock(classOf[TaxLiabilityService])
       val mockEstatesStoreConnector = Mockito.mock(classOf[EstatesStoreConnector])
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -113,4 +113,5 @@ class CheckYourAnswersControllerSpec extends SpecBase {
       application.stop()
     }
   }
+
 }

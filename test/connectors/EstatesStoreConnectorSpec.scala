@@ -26,10 +26,7 @@ import utils.WireMockHelper
 
 import scala.concurrent.ExecutionContext
 
-class EstatesStoreConnectorSpec extends SpecBase
-  with ScalaFutures
-  with IntegrationPatience
-  with WireMockHelper {
+class EstatesStoreConnectorSpec extends SpecBase with ScalaFutures with IntegrationPatience with WireMockHelper {
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
 
@@ -40,9 +37,10 @@ class EstatesStoreConnectorSpec extends SpecBase
         .configure(
           Seq(
             "microservice.services.estates-store.port" -> server.port(),
-            "auditing.enabled" -> false
+            "auditing.enabled"                         -> false
           ): _*
-        ).build()
+        )
+        .build()
 
       implicit def ec: ExecutionContext = application.injector.instanceOf[ExecutionContext]
 
@@ -57,12 +55,12 @@ class EstatesStoreConnectorSpec extends SpecBase
 
       val futureResult = connector.setTaskComplete()
 
-      whenReady(futureResult) {
-        r =>
-          r.status mustBe OK
+      whenReady(futureResult) { r =>
+        r.status mustBe OK
       }
 
       application.stop()
     }
   }
+
 }

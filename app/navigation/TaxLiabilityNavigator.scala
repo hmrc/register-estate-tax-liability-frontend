@@ -22,13 +22,13 @@ import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYea
 import pages._
 import play.api.mvc.Call
 
-class TaxLiabilityNavigator @Inject()() extends Navigator {
+class TaxLiabilityNavigator @Inject() () extends Navigator {
 
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes(mode)(page)(userAnswers)
 
   private def simpleNavigation(mode: Mode): PartialFunction[Page, Call] = {
-    case CYMinusFourEarlierYearsYesNoPage => rts.CYMinusFourLiabilityController.onPageLoad(NormalMode)
-    case CYMinusThreeEarlierYearsYesNoPage => rts.CYMinusThreeLiabilityController.onPageLoad(NormalMode)
+    case CYMinusFourEarlierYearsYesNoPage              => rts.CYMinusFourLiabilityController.onPageLoad(NormalMode)
+    case CYMinusThreeEarlierYearsYesNoPage             => rts.CYMinusThreeLiabilityController.onPageLoad(NormalMode)
     case DidDeclareTaxToHMRCYesNoPage(CYMinus4TaxYear) => rts.CYMinusThreeLiabilityController.onPageLoad(NormalMode)
     case DidDeclareTaxToHMRCYesNoPage(CYMinus3TaxYear) => rts.CYMinusTwoLiabilityController.onPageLoad(NormalMode)
     case DidDeclareTaxToHMRCYesNoPage(CYMinus2TaxYear) => rts.CYMinusOneLiabilityController.onPageLoad(NormalMode)
@@ -36,25 +36,42 @@ class TaxLiabilityNavigator @Inject()() extends Navigator {
   }
 
   private def conditionalNavigation(mode: Mode): PartialFunction[Page, UserAnswers => Call] = {
-    case CYMinusFourYesNoPage => ua => yesNoNav(ua, CYMinusFourYesNoPage,
-      yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus4TaxYear),
-      noCall = rts.CYMinusThreeLiabilityController.onPageLoad(mode)
-    )
-    case CYMinusThreeYesNoPage => ua => yesNoNav(ua, CYMinusThreeYesNoPage,
-      yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus3TaxYear),
-      noCall = rts.CYMinusTwoLiabilityController.onPageLoad(mode)
-    )
-    case CYMinusTwoYesNoPage => ua => yesNoNav(ua, CYMinusTwoYesNoPage,
-      yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus2TaxYear),
-      noCall = rts.CYMinusOneLiabilityController.onPageLoad(mode)
-    )
-    case CYMinusOneYesNoPage => ua => yesNoNav(ua, CYMinusOneYesNoPage,
-      yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus1TaxYear),
-      noCall = rts.CheckYourAnswersController.onPageLoad
-    )
+    case CYMinusFourYesNoPage  =>
+      ua =>
+        yesNoNav(
+          ua,
+          CYMinusFourYesNoPage,
+          yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus4TaxYear),
+          noCall = rts.CYMinusThreeLiabilityController.onPageLoad(mode)
+        )
+    case CYMinusThreeYesNoPage =>
+      ua =>
+        yesNoNav(
+          ua,
+          CYMinusThreeYesNoPage,
+          yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus3TaxYear),
+          noCall = rts.CYMinusTwoLiabilityController.onPageLoad(mode)
+        )
+    case CYMinusTwoYesNoPage   =>
+      ua =>
+        yesNoNav(
+          ua,
+          CYMinusTwoYesNoPage,
+          yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus2TaxYear),
+          noCall = rts.CYMinusOneLiabilityController.onPageLoad(mode)
+        )
+    case CYMinusOneYesNoPage   =>
+      ua =>
+        yesNoNav(
+          ua,
+          CYMinusOneYesNoPage,
+          yesCall = rts.DidDeclareTaxToHMRCController.onPageLoad(mode, CYMinus1TaxYear),
+          noCall = rts.CheckYourAnswersController.onPageLoad
+        )
   }
 
   private def routes(mode: Mode): PartialFunction[Page, UserAnswers => Call] =
-    simpleNavigation(mode) andThen (c => (_:UserAnswers) => c) orElse
+    simpleNavigation(mode) andThen (c => (_: UserAnswers) => c) orElse
       conditionalNavigation(mode)
+
 }

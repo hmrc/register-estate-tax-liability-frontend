@@ -20,22 +20,25 @@ import java.time.LocalDate
 
 import connectors.EstatesConnector
 import javax.inject.Inject
-import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, TaxLiabilityYear, TaxYearsDue, UserAnswers, YearReturnType, YearsReturns}
+import models.{
+  CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, TaxLiabilityYear, TaxYearsDue, UserAnswers,
+  YearReturnType, YearsReturns
+}
 import pages.DidDeclareTaxToHMRCYesNoPage
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.time.TaxYear
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
-                                    localDateService: LocalDateService
-                                   )(implicit ec: ExecutionContext) {
+class TaxLiabilityService @Inject() (estatesConnector: EstatesConnector, localDateService: LocalDateService)(implicit
+  ec: ExecutionContext
+) {
 
-  private val APRIL = 4
+  private val APRIL              = 4
   private val TAX_YEAR_START_DAY = 6
 
   private val DEADLINE_MONTH = 12
-  private val DEADLINE_DAY = 22
+  private val DEADLINE_DAY   = 22
 
   private val LAST_4_TAX_YEARS = 4
   private val LAST_3_TAX_YEARS = 3
@@ -46,8 +49,8 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
 
     val today = localDateService.now
 
-    val todayIsAfterTaxYearStart : Boolean = today.isAfter(TaxYear.current.starts.minusDays(1))
-    val isNotAfterDecemberDeadline : Boolean = today.isBefore(decemberDeadline.plusDays(1))
+    val todayIsAfterTaxYearStart: Boolean   = today.isAfter(TaxYear.current.starts.minusDays(1))
+    val isNotAfterDecemberDeadline: Boolean = today.isBefore(decemberDeadline.plusDays(1))
 
     val oldestYearToShow = if (todayIsAfterTaxYearStart && isNotAfterDecemberDeadline) {
       TaxYear.current.back(LAST_4_TAX_YEARS)
@@ -55,8 +58,7 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
       TaxYear.current.back(LAST_3_TAX_YEARS)
     }
 
-    getTaxYearOfDeath().map{ taxYearOfDeath =>
-
+    getTaxYearOfDeath().map { taxYearOfDeath =>
       val deathWasBeforeMaximum4Years = taxYearOfDeath.startYear < oldestYearToShow.startYear
 
       if (deathWasBeforeMaximum4Years) {
@@ -67,9 +69,9 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
     }
   }
 
-  def getTaxYearOfDeath()(implicit hc: HeaderCarrier): Future[TaxYear] = {
+  def getTaxYearOfDeath()(implicit hc: HeaderCarrier): Future[TaxYear] =
     dateOfDeath().map { dateOfDeath =>
-      val beforeApril = dateOfDeath.getMonthValue < APRIL
+      val beforeApril           = dateOfDeath.getMonthValue < APRIL
       val between1stAnd5thApril = dateOfDeath.getMonthValue == APRIL && dateOfDeath.getDayOfMonth < TAX_YEAR_START_DAY
 
       if (beforeApril || between1stAnd5thApril) {
@@ -78,7 +80,6 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
         TaxYear(dateOfDeath.getYear)
       }
     }
-  }
 
   def dateOfDeath()(implicit hc: HeaderCarrier): Future[LocalDate] = estatesConnector.getDateOfDeath()
 
@@ -94,9 +95,9 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
     yearsDeclared.toList
   }
 
-  def submitTaxLiability(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[HttpResponse] = {
+  def submitTaxLiability(userAnswers: UserAnswers)(implicit hc: HeaderCarrier): Future[HttpResponse] =
     evaluateTaxYears(userAnswers) match {
-      case Nil =>
+      case Nil   =>
         estatesConnector.resetTaxLiability()
       case years =>
         for {
@@ -104,5 +105,5 @@ class TaxLiabilityService @Inject()(estatesConnector: EstatesConnector,
           r <- estatesConnector.saveTaxConsequence(YearsReturns(years))
         } yield r
     }
-  }
+
 }

@@ -16,43 +16,43 @@
 
 package controllers
 
- import base.SpecBase
- import config.annotations.TaxLiability
- import forms.YesNoFormProviderWithArguments
- import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange}
- import navigation.Navigator
- import org.mockito.ArgumentMatchers.any
- import org.mockito.Mockito.when
- import org.mockito.Mockito
- import pages.DidDeclareTaxToHMRCYesNoPage
- import play.api.inject.bind
- import play.api.mvc.Call
- import play.api.test.FakeRequest
- import play.api.test.Helpers._
- import repositories.SessionRepository
- import uk.gov.hmrc.play.language.LanguageUtils
- import views.html.DidDeclareTaxToHMRCYesNoView
+import base.SpecBase
+import config.annotations.TaxLiability
+import forms.YesNoFormProviderWithArguments
+import models.{CYMinus1TaxYear, CYMinus2TaxYear, CYMinus3TaxYear, CYMinus4TaxYear, NormalMode, TaxYear, TaxYearRange}
+import navigation.Navigator
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.mockito.Mockito
+import pages.DidDeclareTaxToHMRCYesNoPage
+import play.api.inject.bind
+import play.api.mvc.Call
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import repositories.SessionRepository
+import uk.gov.hmrc.play.language.LanguageUtils
+import views.html.DidDeclareTaxToHMRCYesNoView
 
- import scala.concurrent.Future
+import scala.concurrent.Future
 
 class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
 
   override def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new YesNoFormProviderWithArguments()
+  val formProvider              = new YesNoFormProviderWithArguments()
   def form(arguments: Seq[Any]) = formProvider.withPrefix("didDeclareToHMRCYesNo", arguments)
 
   def didDeclareRoute(year: TaxYear) = routes.DidDeclareTaxToHMRCController.onPageLoad(NormalMode, year).url
 
   val languageUtils: LanguageUtils = injector.instanceOf[LanguageUtils]
-  val taxYearRange = new TaxYearRange(languageUtils)
+  val taxYearRange                 = new TaxYearRange(languageUtils)
 
   "DidDeclareTaxToHMRC Controller" when {
 
     "for previous tax year" must {
 
       val cyMinus1TaxYearStart: String = taxYearRange.startYear(CYMinus1TaxYear)
-      val cyMinus1TaxYearEnd: String = taxYearRange.endYear(CYMinus1TaxYear)
+      val cyMinus1TaxYearEnd: String   = taxYearRange.endYear(CYMinus1TaxYear)
 
       "return OK and the correct view for a GET" in {
 
@@ -69,7 +69,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs, CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs, CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -91,7 +94,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs.fill(true), CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs.fill(true), CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -139,7 +145,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(request, messages).toString
+          view(boundForm, CYMinus1TaxYear, taxYearRange.toRange(CYMinus1TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -180,7 +189,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
     "for current tax year minus 2" must {
 
       val cyMinus2TaxYearStart: String = taxYearRange.startYear(CYMinus2TaxYear)
-      val cyMinus2TaxYearEnd: String = taxYearRange.endYear(CYMinus2TaxYear)
+      val cyMinus2TaxYearEnd: String   = taxYearRange.endYear(CYMinus2TaxYear)
 
       "return OK and the correct view for a GET" in {
 
@@ -197,7 +206,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs, CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs, CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -219,7 +231,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         val formWithArgs = form(Seq(cyMinus2TaxYearStart, cyMinus2TaxYearEnd))
 
         contentAsString(result) mustEqual
-          view(formWithArgs.fill(true), CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs.fill(true), CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -267,7 +282,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(request, messages).toString
+          view(boundForm, CYMinus2TaxYear, taxYearRange.toRange(CYMinus2TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -308,7 +326,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
     "for current tax year minus 3" must {
 
       val cyMinus3TaxYearStart: String = taxYearRange.startYear(CYMinus3TaxYear)
-      val cyMinus3TaxYearEnd: String = taxYearRange.endYear(CYMinus3TaxYear)
+      val cyMinus3TaxYearEnd: String   = taxYearRange.endYear(CYMinus3TaxYear)
 
       "return OK and the correct view for a GET" in {
 
@@ -325,7 +343,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs, CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs, CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -347,7 +368,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs.fill(true), CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs.fill(true), CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -395,7 +419,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(request, messages).toString
+          view(boundForm, CYMinus3TaxYear, taxYearRange.toRange(CYMinus3TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -436,7 +463,7 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
     "for current tax year minus 4" must {
 
       val cyMinus4TaxYearStart: String = taxYearRange.startYear(CYMinus4TaxYear)
-      val cyMinus4TaxYearEnd: String = taxYearRange.endYear(CYMinus4TaxYear)
+      val cyMinus4TaxYearEnd: String   = taxYearRange.endYear(CYMinus4TaxYear)
 
       "return OK and the correct view for a GET" in {
 
@@ -453,7 +480,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs, CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs, CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -475,7 +505,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual OK
 
         contentAsString(result) mustEqual
-          view(formWithArgs.fill(true), CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(request, messages).toString
+          view(formWithArgs.fill(true), CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -523,7 +556,10 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
         status(result) mustEqual BAD_REQUEST
 
         contentAsString(result) mustEqual
-          view(boundForm, CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(request, messages).toString
+          view(boundForm, CYMinus4TaxYear, taxYearRange.toRange(CYMinus4TaxYear), NormalMode)(
+            request,
+            messages
+          ).toString
 
         application.stop()
       }
@@ -562,4 +598,5 @@ class DidDeclareTaxToHMRCControllerSpec extends SpecBase {
     }
 
   }
+
 }

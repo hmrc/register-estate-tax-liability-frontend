@@ -27,25 +27,23 @@ import java.time.LocalDate
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class EstatesConnector @Inject()(http: HttpClientV2, config: FrontendAppConfig) {
+class EstatesConnector @Inject() (http: HttpClientV2, config: FrontendAppConfig) {
 
   private val getDateOfDeathUrl = s"${config.estatesUrl}/estates/date-of-death"
 
   private val postTaxConsequences = s"${config.estatesUrl}/estates/tax-liability"
 
-  def getDateOfDeath()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[LocalDate] = {
+  def getDateOfDeath()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[LocalDate] =
     http.get(url"$getDateOfDeathUrl").execute[LocalDate]
-  }
 
-  def saveTaxConsequence(taxYears: YearsReturns)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    http.post(url"$postTaxConsequences").withBody( Json.toJson(taxYears)).execute[HttpResponse]
-  }
+  def saveTaxConsequence(
+    taxYears: YearsReturns
+  )(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] =
+    http.post(url"$postTaxConsequences").withBody(Json.toJson(taxYears)).execute[HttpResponse]
 
   private lazy val resetTaxLiabilityUrl = s"${config.estatesUrl}/estates/reset-tax-liability"
 
-  def resetTaxLiability()(implicit hc: HeaderCarrier, ec : ExecutionContext): Future[HttpResponse] = {
+  def resetTaxLiability()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] =
     http.post(url"$resetTaxLiabilityUrl").execute[HttpResponse]
-
-  }
 
 }

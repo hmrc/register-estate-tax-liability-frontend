@@ -29,27 +29,26 @@ import views.html.EarlierYearsToPayThanAskedYesNoView
 
 import scala.concurrent.Future
 
-class CYMinusFourEarlierYearsLiabilityController @Inject()(
-                                 val controllerComponents: MessagesControllerComponents,
-                                 @TaxLiability navigator: Navigator,
-                                 actions: Actions,
-                                 view: EarlierYearsToPayThanAskedYesNoView,
-                                 taxYearRange: TaxYearRange
-                               ) extends FrontendBaseController with I18nSupport {
+class CYMinusFourEarlierYearsLiabilityController @Inject() (
+  val controllerComponents: MessagesControllerComponents,
+  @TaxLiability navigator: Navigator,
+  actions: Actions,
+  view: EarlierYearsToPayThanAskedYesNoView,
+  taxYearRange: TaxYearRange
+) extends FrontendBaseController with I18nSupport {
 
   private val workingTaxYear = CYMinus4TaxYear
-  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData {
-    implicit request =>
 
-      val start = taxYearRange.yearAtStart(workingTaxYear)
+  def onPageLoad(mode: Mode): Action[AnyContent] = actions.authWithData { implicit request =>
+    val start = taxYearRange.yearAtStart(workingTaxYear)
 
-      val continueUrl = routes.CYMinusFourEarlierYearsLiabilityController.onSubmit(mode)
+    val continueUrl = routes.CYMinusFourEarlierYearsLiabilityController.onSubmit(mode)
 
-      Ok(view(start, mode, continueUrl))
+    Ok(view(start, mode, continueUrl))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async {
-    implicit request =>
-      Future.successful(Redirect(navigator.nextPage(CYMinusFourEarlierYearsYesNoPage, mode, request.userAnswers)))
+  def onSubmit(mode: Mode): Action[AnyContent] = actions.authWithData.async { implicit request =>
+    Future.successful(Redirect(navigator.nextPage(CYMinusFourEarlierYearsYesNoPage, mode, request.userAnswers)))
   }
+
 }

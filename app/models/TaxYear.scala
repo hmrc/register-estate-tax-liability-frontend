@@ -17,39 +17,44 @@
 package models
 
 import play.api.mvc.JavascriptLiteral
+
 sealed trait TaxYear {
   val year: Int
-  val messagePrefix : String
+  val messagePrefix: String
   override def toString: String = year.toString
 
   def asShortFinishYear(): String =
     uk.gov.hmrc.time.TaxYear.current.back(year).finishYear.toString.takeRight(2)
+
 }
 
 case object CYMinus4TaxYear extends TaxYear {
-  override val year: Int = 4
+  override val year: Int             = 4
   override val messagePrefix: String = "cyMinusFourYesNo"
 }
+
 case object CYMinus3TaxYear extends TaxYear {
-  override val year: Int = 3
+  override val year: Int             = 3
   override val messagePrefix: String = "cyMinusThreeYesNo"
 }
+
 case object CYMinus2TaxYear extends TaxYear {
-  override val year: Int = 2
+  override val year: Int             = 2
   override val messagePrefix: String = "cyMinusTwoYesNo"
 }
+
 case object CYMinus1TaxYear extends TaxYear {
-  override val year: Int = 1
+  override val year: Int             = 1
   override val messagePrefix: String = "cyMinusOneYesNo"
 }
 
 object TaxYear {
 
-  implicit val jsLiteral : JavascriptLiteral[TaxYear] = new JavascriptLiteral[TaxYear] {
+  implicit val jsLiteral: JavascriptLiteral[TaxYear] = new JavascriptLiteral[TaxYear] {
     override def to(value: TaxYear): String = value.toString
   }
 
-  def from(int: Int) : Option[TaxYear] = {
+  def from(int: Int): Option[TaxYear] =
     int match {
       case 4 => Some(CYMinus4TaxYear)
       case 3 => Some(CYMinus3TaxYear)
@@ -57,6 +62,5 @@ object TaxYear {
       case 1 => Some(CYMinus1TaxYear)
       case _ => None
     }
-  }
 
 }

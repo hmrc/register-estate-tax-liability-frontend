@@ -32,11 +32,12 @@ import play.api.mvc.{AnyContentAsEmpty, Call}
 import play.api.test.FakeRequest
 import repositories.SessionRepository
 
-trait SpecBase extends PlaySpec with GuiceOneAppPerSuite with Mocked with TryValues with ScalaFutures with IntegrationPatience {
+trait SpecBase
+    extends PlaySpec with GuiceOneAppPerSuite with Mocked with TryValues with ScalaFutures with IntegrationPatience {
 
   val defaultAppConfigurations: Map[String, Any] = Map(
-    "auditing.enabled" -> false,
-    "metrics.enabled" -> false,
+    "auditing.enabled"      -> false,
+    "metrics.enabled"       -> false,
     "play.filters.disabled" -> List("play.filters.csrf.CSRFFilter", "play.filters.csp.CSPFilter")
   )
 

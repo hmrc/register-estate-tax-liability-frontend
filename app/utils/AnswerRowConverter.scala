@@ -22,25 +22,26 @@ import pages.QuestionPage
 import play.api.i18n.Messages
 import viewmodels.AnswerRow
 
-class AnswerRowConverter @Inject()() {
+class AnswerRowConverter @Inject() () {
 
-  def bind(userAnswers: UserAnswers)
-          (implicit messages: Messages): Bound = new Bound(userAnswers)
+  def bind(userAnswers: UserAnswers)(implicit messages: Messages): Bound = new Bound(userAnswers)
 
   class Bound(userAnswers: UserAnswers)(implicit messages: Messages) {
 
-    def yesNoQuestion(query: QuestionPage[Boolean],
-                      labelKey: String,
-                      changeUrl: String,
-                      arguments: Any*): Option[AnswerRow] = {
-      userAnswers.get(query) map {x =>
+    def yesNoQuestion(
+      query: QuestionPage[Boolean],
+      labelKey: String,
+      changeUrl: String,
+      arguments: Any*
+    ): Option[AnswerRow] =
+      userAnswers.get(query) map { x =>
         AnswerRow(
           messages(s"$labelKey.checkYourAnswersLabel", arguments: _*),
           CheckAnswersFormatters.yesOrNo(x),
           changeUrl
         )
       }
-    }
 
   }
+
 }
