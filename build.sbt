@@ -37,7 +37,6 @@ lazy val root = (project in file("."))
         group(
           Seq(
             "javascripts/registerestatetaxliabilityfrontend.js",
-            "javascripts/autocomplete.js",
             "javascripts/iebacklink.js",
             "javascripts/print.js"
           )
