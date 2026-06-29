@@ -15,9 +15,6 @@
  *@
 
 @import config.FrontendAppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteCss
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcAccessibleAutocompleteJavascript
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
 @import resources._
@@ -25,13 +22,10 @@
 @this(
     appConfig: FrontendAppConfig,
     hmrcTimeoutDialogHelper: HmrcTimeoutDialogHelper,
-    standardBetaBanner: StandardBetaBanner,
     stylesheets: Stylesheets,
     govukBackLink: GovukBackLink,
     hmrcStandardPage: HmrcStandardPage,
-    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-    autocompleteCss: HmrcAccessibleAutocompleteCss,
-    autocompleteJavascript: HmrcAccessibleAutocompleteJavascript
+    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper
 )
 
 @(title: String,
@@ -59,7 +53,6 @@
     }
 
     @stylesheets()
-    @autocompleteCss()
 }
 
 @beforeContentBlock = {
@@ -85,7 +78,6 @@
     isWelshTranslationAvailable = true,
     templateOverrides = TemplateOverrides(
         additionalHeadBlock = Some(additionalHead),
-        beforeContentBlock = Some(beforeContentBlock),
-        additionalScriptsBlock = Some(autocompleteJavascript())
+        beforeContentBlock = Some(beforeContentBlock)
     )
 ))(mainContentWithGetHelp)
