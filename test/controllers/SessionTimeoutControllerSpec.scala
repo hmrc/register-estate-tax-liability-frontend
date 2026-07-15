@@ -49,7 +49,7 @@ class SessionTimeoutControllerSpec extends SpecBase {
         val fakeRequest: Request[AnyContent] = FakeRequest().withSession()
         val res                              = TestSessionTimeoutController.timeout(fakeRequest)
         val continueUrl                      = URLEncoder.encode(s"${frontendAppConfig.timeOutUrl}", "UTF-8")
-        val expectedUrl = s"${frontendAppConfig.logoutWithBasGatewayUrl}?continue=$continueUrl"
+        val expectedUrl                      = s"${frontendAppConfig.logoutWithBasGatewayUrl}?continue=$continueUrl"
         status(res) mustEqual SEE_OTHER
         redirectLocation(res).value mustEqual expectedUrl
       }
