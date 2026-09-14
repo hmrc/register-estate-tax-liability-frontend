@@ -130,45 +130,6 @@ trait ViewBehaviours extends ViewSpecBase {
       for (key <- expectedGuidanceKeys) assertContainsText(doc, messages(s"$messageKeyPrefix.$key"))
     }
 
-  def confirmationPage(
-    view: HtmlFormat.Appendable,
-    messageKeyPrefix: String,
-    messageKeyParam: String,
-    accessibleKeyParam: String
-  ): Unit =
-
-    "behave like a confirmation page" when {
-
-      "rendered" must {
-
-        "have the correct banner title" in {
-
-          val doc         = asDocument(view)
-          val bannerTitle = doc.getElementsByClass("govuk-header__link govuk-header__link--service-name")
-          bannerTitle.html() mustBe messages("service.name")
-        }
-
-        "display the correct browser title" in {
-
-          val doc = asDocument(view)
-          assertEqualsMessage(doc, "title", s"$messageKeyPrefix.title", accessibleKeyParam)
-        }
-
-        "display the correct page title" in {
-
-          val doc = asDocument(view)
-          assertPageTitleEqualsMessage(doc, s"$messageKeyPrefix.heading", messageKeyParam + " " + accessibleKeyParam)
-        }
-
-        "display language toggles" in {
-
-          val doc = asDocument(view)
-          assertRenderedByCssSelector(doc, "a[lang=cy]")
-        }
-
-      }
-    }
-
   def pageWithBackLink(view: HtmlFormat.Appendable): Unit =
 
     "behave like a page with a back link" must {
@@ -281,7 +242,7 @@ trait ViewBehaviours extends ViewSpecBase {
       }
     }
 
-  def pageWithoutLogoutButton(view: HtmlFormat.Appendable) =
+  def pageWithoutLogoutButton(view: HtmlFormat.Appendable): Unit =
 
     "behave like a page without a logout button" must {
       "not have a logout button" in {

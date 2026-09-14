@@ -21,26 +21,24 @@ import controllers.routes
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.Call
-import uk.gov.hmrc.hmrcfrontend.config.ContactFrontendConfig
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 @Singleton
 class FrontendAppConfig @Inject() (
   configuration: Configuration,
-  contactFrontendConfig: ContactFrontendConfig,
   servicesConfig: ServicesConfig
 ) {
-
-  val betaFeedbackUrl =
-    s"${contactFrontendConfig.baseUrl.get}/contact/beta-feedback?service=${contactFrontendConfig.serviceId.get}"
 
   lazy val authUrl: String          = servicesConfig.baseUrl("auth")
   lazy val loginUrl: String         = configuration.get[String]("urls.login")
   lazy val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")
   lazy val logoutUrl: String        = configuration.get[String]("urls.logout")
 
-  lazy val basGatewayBaseUrl: String       = configuration.get[String]("bas-gateway.host")
-  lazy val feedbackFrontendUrl: String     = configuration.get[String]("feedback-frontend.url")
+  lazy val basGatewayBaseUrl: String = configuration.get[String]("bas-gateway.host")
+
+  lazy val feedbackFrontendUrl: String =
+    s"${configuration.get[String]("feedback-frontend.url")}?useServiceNavigation"
+
   lazy val timeOutUrl: String              = configuration.get[String]("urls.timeOut")
   lazy val logoutWithBasGatewayUrl: String = s"$basGatewayBaseUrl$logoutUrl"
 
@@ -50,16 +48,10 @@ class FrontendAppConfig @Inject() (
   lazy val countdownLength: Int = configuration.get[Int]("timeout.countdown")
   lazy val timeoutLength: Int   = configuration.get[Int]("timeout.length")
 
-  lazy val locationCanonicalList: String      = configuration.get[String]("location.canonical.list.all")
-  lazy val locationCanonicalListNonUK: String = configuration.get[String]("location.canonical.list.nonUK")
-
   lazy val estatesUrl: String      = servicesConfig.baseUrl("estates")
   lazy val estatesStoreUrl: String = servicesConfig.baseUrl("estates-store")
 
   lazy val registerEstateHubOverview: String = configuration.get[String]("urls.registerEstateHubOverview")
-
-  lazy val languageTranslationEnabled: Boolean =
-    configuration.get[Boolean]("microservice.services.features.welsh-translation")
 
   def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
@@ -70,8 +62,5 @@ class FrontendAppConfig @Inject() (
     (lang: String) => routes.LanguageSwitchController.switchToLanguage(lang)
 
   val cachettl: Long = configuration.get[Long]("mongodb.timeToLiveInSeconds")
-
-  val dropIndexes: Boolean =
-    configuration.getOptional[Boolean]("microservice.services.features.mongo.dropIndexes").getOrElse(false)
 
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,23 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this()
+package utils
 
-@(href : String, id : String = "", key : String, openInNewWindow: Boolean = false)(implicit messages: Messages)
+import base.SpecBase
 
-<a class="govuk-link" id="@id" href="@href" @if(openInNewWindow) {target="_blank"}>@messages(key)</a>
+class CheckAnswersFormattersSpec extends SpecBase {
+
+  "CheckAnswersFormatters" must {
+
+    "render a positive answer" in {
+      CheckAnswersFormatters.yesOrNo(answer = true).toString mustBe messages("site.yes")
+    }
+
+    "render a negative answer" in {
+      CheckAnswersFormatters.yesOrNo(answer = false).toString mustBe messages("site.no")
+    }
+  }
+
+}

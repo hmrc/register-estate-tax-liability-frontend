@@ -80,6 +80,12 @@ class CheckYourAnswersHelperSpec extends SpecBase {
         )
       }
 
+      "render no section when the earlier years questions have not been answered" in {
+        val cyaHelper = injector.instanceOf[CheckYourAnswersHelper]
+
+        cyaHelper.earlierThan4YearsAnswers(emptyUserAnswers) mustBe None
+        cyaHelper.earlierThan3YearsAnswers(emptyUserAnswers) mustBe None
+      }
     }
 
     "CY-4" must {

@@ -208,6 +208,14 @@ class TaxLiabilityNavigatorSpec extends SpecBase with ScalaCheckPropertyChecks {
       }
 
     }
+
+    "a question has not been answered" must {
+
+      "send the user to the session expired page" in
+        navigator
+          .nextPage(CYMinusFourYesNoPage, NormalMode, emptyUserAnswers)
+          .mustBe(controllers.routes.SessionExpiredController.onPageLoad)
+    }
   }
 
 }

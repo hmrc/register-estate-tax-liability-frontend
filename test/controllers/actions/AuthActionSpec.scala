@@ -19,12 +19,12 @@ package controllers.actions
 import base.SpecBase
 import com.google.inject.Inject
 import controllers.routes
-import play.api.mvc.{BodyParsers, Results}
+import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
+import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,7 +32,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class AuthActionSpec extends SpecBase {
 
   class Harness(authAction: IdentifierAction) {
-    def onPageLoad() = authAction(_ => Results.Ok)
+    def onPageLoad(): Action[AnyContent] = authAction(_ => Results.Ok)
   }
 
   "Auth Action" when {
@@ -169,6 +169,29 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
+    "the user is authorised but has no internal id" must {
+
+      "refuse the request" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
+
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeAuthConnector(new ~(None, Some(AffinityGroup.Organisation))),
+          frontendAppConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+
+        val exception = intercept[UnauthorizedException] {
+          await(controller.onPageLoad()(fakeRequest))
+        }
+
+        exception.message mustBe "Unable to retrieve internal Id"
+      }
+    }
+
     "the user has an unsupported credential role" must {
 
       "redirect the user to the unauthorised page" in {
@@ -191,6 +214,17 @@ class AuthActionSpec extends SpecBase {
       }
     }
   }
+
+}
+
+class FakeAuthConnector @Inject() (retrievalResult: Any) extends AuthConnector {
+  val serviceUrl: String = ""
+
+  override def authorise[A](predicate: Predicate, retrieval: Retrieval[A])(implicit
+    hc: HeaderCarrier,
+    ec: ExecutionContext
+  ): Future[A] =
+    Future.successful(retrievalResult.asInstanceOf[A])
 
 }
 
