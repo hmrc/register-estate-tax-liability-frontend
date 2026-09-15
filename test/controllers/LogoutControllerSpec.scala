@@ -41,7 +41,8 @@ class LogoutControllerSpec extends SpecBase {
           .configure("microservice.services.features.auditing.logout" -> true)
           .build()
 
-        val continueUrl = URLEncoder.encode(s"${frontendAppConfig.feedbackFrontendUrl}", "UTF-8")
+        val continueUrl =
+          URLEncoder.encode("http://localhost:9514/feedback/estates?useServiceNavigation", "UTF-8")
 
         val expectedUrl = s"${frontendAppConfig.logoutWithBasGatewayUrl}?continue=$continueUrl"
 
@@ -71,7 +72,8 @@ class LogoutControllerSpec extends SpecBase {
           .configure("microservice.services.features.auditing.logout" -> false)
           .build()
 
-        val continueUrl = URLEncoder.encode(s"${frontendAppConfig.feedbackFrontendUrl}", "UTF-8")
+        val continueUrl =
+          URLEncoder.encode("http://localhost:9514/feedback/estates?useServiceNavigation", "UTF-8")
 
         val expectedUrl = s"${frontendAppConfig.logoutWithBasGatewayUrl}?continue=$continueUrl"
 

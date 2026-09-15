@@ -17,6 +17,7 @@
 package views
 
 import play.api.data.FormError
+import viewmodels.RadioOption
 
 class ViewUtilsSpec extends ViewSpecBase {
 
@@ -66,6 +67,13 @@ class ViewUtilsSpec extends ViewSpecBase {
       val error  = FormError(key = "value", message = "otherIndividual.nationalInsuranceYesNo.error.required")
       val result = ViewUtils.errorHref(error)
       result mustBe "value-yes"
+    }
+
+    "refer to the first radio option when the question is a set of radios" in {
+      val error   = FormError(key = "value", message = "kindOfTrust.error.required")
+      val options = Seq(RadioOption("kindOfTrust", "Deed"), RadioOption("kindOfTrust", "Intervivos"))
+      val result  = ViewUtils.errorHref(error, options)
+      result mustBe "kindOfTrust.Deed"
     }
 
     "not refer to date field when error has arguments" in {

@@ -16,7 +16,7 @@
 
 package repositories
 
-import java.time.LocalDateTime
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import org.mongodb.scala.model.Indexes.ascending
 import config.FrontendAppConfig
@@ -48,13 +48,13 @@ class DefaultSessionRepository @Inject() (
             .expireAfter(config.cachettl, TimeUnit.SECONDS)
         )
       ),
-      replaceIndexes = config.dropIndexes
+      replaceIndexes = true
     )
     with SessionRepository {
 
   override def get(id: String): Future[Option[UserAnswers]] = {
     val selector     = equal("_id", id)
-    val modifier     = Updates.set("updatedAt", LocalDateTime.now())
+    val modifier     = Updates.set("lastUpdated", Instant.now())
     val updateOption = new FindOneAndUpdateOptions().upsert(false)
 
     collection.findOneAndUpdate(selector, modifier, updateOption).toFutureOption()
@@ -62,7 +62,7 @@ class DefaultSessionRepository @Inject() (
 
   override def set(userAnswers: UserAnswers): Future[Boolean] = {
     val selector = equal("_id", userAnswers.id)
-    val modifier = userAnswers.copy(lastUpdated = LocalDateTime.now)
+    val modifier = userAnswers.copy(lastUpdated = Instant.now)
     val options  = ReplaceOptions().upsert(true)
 
     collection.replaceOne(selector, modifier, options).headOption().map(_.exists(_.wasAcknowledged()))

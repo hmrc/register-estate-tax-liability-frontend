@@ -184,4 +184,35 @@ class ConstraintsSpec extends AnyWordSpec with Matchers with ScalaCheckPropertyC
     }
   }
 
+  "inRange" must {
+
+    "return Valid for a number within the range" in {
+      inRange(1, 10, "error.range").apply(5) mustEqual Valid
+    }
+
+    "return Valid for a number at either end of the range" in {
+      inRange(1, 10, "error.range").apply(1) mustEqual Valid
+      inRange(1, 10, "error.range").apply(10) mustEqual Valid
+    }
+
+    "return Invalid for a number below the range" in {
+      inRange(1, 10, "error.range").apply(0) mustEqual Invalid("error.range", 1, 10)
+    }
+
+    "return Invalid for a number above the range" in {
+      inRange(1, 10, "error.range").apply(11) mustEqual Invalid("error.range", 1, 10)
+    }
+  }
+
+  "nonEmptySet" must {
+
+    "return Valid for a set with something in it" in {
+      nonEmptySet("error.required").apply(Set("foo")) mustEqual Valid
+    }
+
+    "return Invalid for an empty set" in {
+      nonEmptySet("error.required").apply(Set.empty) mustEqual Invalid("error.required")
+    }
+  }
+
 }

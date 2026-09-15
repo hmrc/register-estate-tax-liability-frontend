@@ -15,19 +15,16 @@
  *@
 
 @import controllers.routes._
-@import config.FrontendAppConfig
 @import models.TaxYear
-@import views.html.components.{Heading, ErrorSummary, InputYesNo, SubmitButton, Link}
+@import views.html.components.{Heading, ErrorSummary, InputYesNo, SubmitButton}
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig,
     heading: Heading,
     errorSummary: ErrorSummary,
     inputYesNo: InputYesNo,
-    submitButton: SubmitButton,
-    link: Link
+    submitButton: SubmitButton
 )
 
 @(form: Form[_], taxYear: TaxYear, toRange: String, mode: Mode)(implicit request: Request[_], messages: Messages)
@@ -43,7 +40,7 @@
 
         @heading("didDeclareToHMRCYesNo.heading", Some(toRange))
 
-        <p>@messages("didDeclareToHMRCYesNo.p1", toRange)</p>
+        <p class="govuk-body">@messages("didDeclareToHMRCYesNo.p1", toRange)</p>
 
         @inputYesNo(
             field = form("value"),

@@ -15,16 +15,13 @@
  *@
 
 @import controllers.routes._
-@import config.FrontendAppConfig
-@import views.html.components.{Heading, SubmitButton, Link}
+@import views.html.components.{Heading, SubmitButton}
 
 @this(
     main_template: MainTemplate,
     formHelper: FormWithCSRF,
-    appConfig: FrontendAppConfig,
     heading: Heading,
-    submitButton: SubmitButton,
-    link: Link
+    submitButton: SubmitButton
 )
 
 @(date: String, mode: Mode, continueUrl: Call)(implicit request: Request[_], messages: Messages)
@@ -38,7 +35,7 @@
 
         @heading("earlierYearsLiabilityYesNo.heading", Some(date))
 
-        <p>@messages("earlierYearsLiabilityYesNo.p1")</p>
+        <p class="govuk-body">@messages("earlierYearsLiabilityYesNo.p1")</p>
 
         @submitButton()
 

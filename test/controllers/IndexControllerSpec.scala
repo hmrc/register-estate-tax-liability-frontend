@@ -26,7 +26,8 @@ import pages.DateOfDeathPage
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import services.LocalDateService
+import models.TaxLiabilityYear
+import services.{LocalDateService, TaxLiabilityService}
 import uk.gov.hmrc.time.TaxYear
 
 import java.time.LocalDate
@@ -384,6 +385,34 @@ class IndexControllerSpec extends SpecBase {
 
           application.stop()
         }
+      }
+    }
+
+    "return an internal server error" when {
+
+      "the first year of tax liability is not one this journey asks about" in {
+
+        val mockTaxLiabilityService = Mockito.mock(classOf[TaxLiabilityService])
+
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(bind[TaxLiabilityService].toInstance(mockTaxLiabilityService))
+          .build()
+
+        when(mockTaxLiabilityService.dateOfDeath()(any()))
+          .thenReturn(Future.successful(LocalDate.of(cyTaxYear.getYear, 5, 1)))
+
+        when(mockTaxLiabilityService.getFirstYearOfTaxLiability()(any()))
+          .thenReturn(Future.successful(TaxLiabilityYear(TaxYear.current, earlierYears = false)))
+
+        when(sessionRepository.resetCache(any())).thenReturn(Future.successful(Some(true)))
+
+        val request = FakeRequest(GET, routes.IndexController.onPageLoad.url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+
+        application.stop()
       }
     }
   }

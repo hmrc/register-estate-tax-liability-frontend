@@ -3,7 +3,7 @@ import play.sbt.routes.RoutesKeys
 lazy val appName: String = "register-estate-tax-liability-frontend"
 
 ThisBuild / scalaVersion := "2.13.18"
-ThisBuild / majorVersion := 0
+ThisBuild / majorVersion := 1
 
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
